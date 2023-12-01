@@ -16,25 +16,26 @@ body {
 .page-heading {
 
     & .nav {
+        height:5rem;
         position: fixed;
         background-color: rgb(32, 32, 32);
         border-bottom: 2px solid rgb(255, 255, 255);
         top: 0;
         box-shadow: 0 0 20px rgb(124, 255, 255);
         width: 100%;
-        height: 4.5rem;
         display: flex;
         align-items: center;
         gap: 2rem;
         color: white;
-
+        padding-right: 26px; 
         & .name {
+            width: 40rem;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             padding: 40px;
-            margin-right: 42rem;
+            margin-right: 20rem;
             text-shadow: 0 0 10px rgb(255, 255, 255);
         }
-
+        
         & a {
             text-decoration: none;
             color: rgb(255, 255, 255);
@@ -45,7 +46,7 @@ body {
             display: flex;
             justify-content: center;
             align-items: center;
-
+            
             &:hover {
                 color: #00fff7;
                 text-shadow: 0 0 10px cyan;
@@ -63,16 +64,15 @@ body {
         background-color: transparent;
         float: right;
         margin-right: 15rem;
-        margin-top: 1rem;
         overflow: visible;
         border-radius: 20px;
         overflow: hidden;
         border: 2px dashed rgb(255, 255, 255);
         box-shadow: 0 0 20px cyan;
-        background: linear-gradient(45deg, rgb(55, 99, 144), rgb(82, 82, 215));
+        background: linear-gradient(45deg, rgb(38, 70, 102), rgb(105, 105, 243));
 
         & img {
-            width: 24rem;
+            width: 22rem;
             height: 100%;
             object-fit: fill;
         }
@@ -112,14 +112,16 @@ body {
 
         & button {
             cursor: pointer;
-            width: 7rem;
+            width: 8rem;
             height: 3rem;
             margin: 1rem;
-            border-radius: 3px;
-            background-color: rgb(255, 255, 255);
+            border-radius:2rem;
+            font-weight:800;
+            background: rgb(255, 255, 255);
             border: 1px solid black;
             box-shadow: 0 4px 15px black;
             transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
 
             &:hover {
 
