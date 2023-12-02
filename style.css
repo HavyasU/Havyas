@@ -353,17 +353,19 @@ body {
     transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 375px) {
     html {
-        min-width: 400px;
+        min-width: 375px;
     }
 
     body {
+        width: min-content;
+        min-width: 375px;
         background: linear-gradient(85deg, #363e96, #3192d7) no-repeat;
     }
 
     .page-heading .nav {
-        width: 400px;
+        min-width: 100%;
         font-size: 20px;
     }
 
@@ -384,7 +386,8 @@ body {
     /* ABOUT  */
 
     #About {
-        width: 400px;
+        /* width: 400px; */
+        min-width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -433,7 +436,8 @@ body {
 
     /* skills */
     #Skills {
-        width: 400px;
+        /* width: 400px; */
+        min-width: 100%;
         padding: 0;
         margin: 0;
     }
@@ -463,7 +467,8 @@ body {
     /* Projects  */
 
     #Projects {
-        width: 400px;
+        /* width: 400px; */
+        min-width: 100%;
         padding: 0;
 
     }
@@ -512,7 +517,8 @@ body {
 
     /* contacts  */
     #Contact {
-        width: 400px;
+        /* width: 400px; */
+        min-width: 100%;
         padding: 0;
         overflow: hidden;
         margin: 0;
@@ -550,7 +556,8 @@ body {
 
     /* footer 2 */
     #footer {
-        width: 400px;
+        /* width: 400px; */
+        min-width: 100%;
         background-color: black;
         color: white;
         display: flex;
