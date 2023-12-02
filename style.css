@@ -353,8 +353,8 @@ body {
     transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@media  (max-width: 600px) {
-    
+@media screen and (max-width: 600px) {
+
     body {
         background: linear-gradient(85deg, #363e96, #3192d7) no-repeat;
     }
@@ -567,22 +567,21 @@ body {
     }
 }
 
-@media (max-width:390px)
-{
-    *
-    {
-    padding: 0;
-    margin: 0;
+@media (max-width:390px) {
+    * {
+        padding: 0;
+        margin: 0;
     }
-    #About .p-btn
-    {
+
+    #About .p-btn {
         width: fit-content;
     }
-    #Projects .flex-div .pro-card
-    {
+
+    #Projects .flex-div .pro-card {
         width: 15rem;
     }
-    #Contact .flex-div .contact-form  {
+
+    #Contact .flex-div .contact-form {
         width: 15rem;
     }
 }
