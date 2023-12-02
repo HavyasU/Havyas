@@ -511,6 +511,7 @@ body {
         width: 400px;
         padding: 0;
         overflow: hidden;
+        margin: 0;
     }
 
     #Contact .flex-div {
@@ -526,6 +527,9 @@ body {
         font-size: 1.3rem;
     }
     #Contact .flex-div .contact-form {
-        width: 20rem;
+        width: 18rem;
+        height: 10rem;
+        margin: 0;
+        margin-block: 10px;
     }
 }
