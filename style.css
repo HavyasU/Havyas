@@ -6,8 +6,12 @@
     border: 0;
 }
 
+html {
+    width: fit-content;
+}
+
 body {
-    width: 100vw;
+    width: fit-content;
     height: 100%;
     background: linear-gradient(45deg, #3b3f70, #40b0ff) no-repeat;
 }
@@ -33,6 +37,7 @@ body {
     padding: 40px;
     margin-right: 20rem;
     text-shadow: 0 0 10px rgb(255, 255, 255);
+    font-size: 2rem;
 }
 
 .page-heading .nav a {
@@ -150,18 +155,15 @@ body {
 }
 
 #Skills .skill-card {
-    width: 35rem;
-    height: 18rem;
     list-style: disc;
     background-color: #0D98BA;
     border: 2px dotted white;
     box-shadow: 0 0 30px white;
     border-radius: 20px;
     margin: 1rem;
-    padding-left: 150px;
     color: white;
-    padding-top: 30px;
     transition: all .7s cubic-bezier(0.075, 0.82, 0.165, 1);
+    padding: 20px 130px;
 }
 
 #Skills .skill-card:hover {
@@ -338,22 +340,29 @@ body {
     color: white;
 }
 
-@media only screen and (max-width: 400px) {
-    body {
-        width: 100vw;
-        height: 100vh;
-        background-color: #40b0ff;
+.hide {
+    display: none;
+    transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+@media only screen and (max-width:400px) {
+
+    body,
+    html {
+        min-width: fit-content;
     }
 
     .page-heading .nav {
         width: 100%;
-        font-size: 10px;
+        height: 8rem;
     }
 
     .page-heading .nav .name {
-        width: 40rem;
+        width: 20rem;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         margin-right: 0rem;
+        font-size: 2rem;
         text-shadow: 0 0 10px rgb(255, 255, 255);
     }
 
@@ -362,12 +371,12 @@ body {
     }
 
     .page-heading .mobile-nav {
-        background-color: #121212;
-        margin-top: 5rem;
+        margin-top: 8rem;
         position: fixed;
-        right: 10px;
-        padding: 20px;
+        right: 40px;
         border-radius: 20px;
+        width: min-content;
+        background-color: #121212;
     }
 
     .page-heading .mobile-nav a {
@@ -384,6 +393,8 @@ body {
         margin: 1rem 0;
         padding: 20px 100px;
         transition: all .4s cubic-bezier(0.215, 0.610, 0.355, 1);
+        background-color: #121212;
+
     }
 
     .page-heading .mobile-nav a:hover {
@@ -397,9 +408,127 @@ body {
     .page-heading .mobile-nav i.icon {
         position: absolute;
         font-size: 3rem;
-        top: 0;
-        right: 40px;
-        margin-top: -4rem;
+        top: -6rem;
+        right: 3rem;
         color: rgb(255, 255, 255);
+        border: 1px solid white;
+        padding: 10px;
     }
+
+    #About {
+        margin-bottom: 100px;
+        padding-top: 10rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: red;
+        width: 42rem;
+        margin: 0;
+    }
+
+    #About .p-img {
+        width: 100%;
+        background-color: transparent;
+        overflow: visible;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 2px dashed rgb(255, 255, 255);
+        box-shadow: 0 0 20px cyan;
+        background: linear-gradient(45deg, rgb(38, 70, 102), rgb(105, 105, 243));
+        margin: 0rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #About .p-img img {
+        width: 22rem;
+        height: 100%;
+        object-fit: fill;
+    }
+
+    #About .p-desc {
+        width: 40rem;
+        margin-left: 7rem;
+        margin-top: 5rem;
+        padding: 40px;
+        color: white;
+    }
+
+    #About .p-desc h1 {
+        font-size: 3rem;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    #About .p-desc p {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    #About .p-desc p b {
+        font-weight: 900;
+    }
+
+    #About .p-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        width: 25rem;
+        margin-left: 8rem;
+        list-style: none;
+    }
+
+    /* skils */
+    /* skils */
+    #Skills {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4rem 0;
+        align-items: center;
+    }
+
+    #Skills .flex-divs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+    }
+
+    #Skills h1.heading {
+        color: white;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 60px;
+        margin: 40px 0;
+    }
+
+    #Skills .skill-card {
+        list-style: disc;
+        background-color: #0D98BA;
+        border: 2px dotted white;
+        box-shadow: 0 0 30px white;
+        border-radius: 20px;
+        margin: 1rem;
+        color: white;
+        transition: all .7s cubic-bezier(0.075, 0.82, 0.165, 1);
+        padding: 20px 130px;
+    }
+
+    #Skills .skill-card:hover {
+        border: 2px dotted rgb(0, 255, 229);
+        box-shadow: 0 0 30px cyan;
+    }
+
+    #Skills .skill-card h1 {
+        font-size: 40px;
+        padding: 20px 0;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    #Skills .skill-card li {
+        font-size: 20px;
+    }
+
 }

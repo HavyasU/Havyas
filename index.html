@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width; initial-scale=1.0;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Havyas's Portfolio</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
         integrity="your-integrity-code" crossorigin="anonymous">
@@ -42,23 +42,27 @@
                 <i class="fa-solid fa-address-book"></i>&nbsp; <li class="n-li">Contact</li>
             </a>
         </ul>
-        <ul class="mobile-nav ">
-            <a href="#About">
-                <i class="fa-solid fa-user"></i>&nbsp;<li class="n-li">About</li>
-            </a>
-            <a href="#Skills">
-                <i class="fa-solid fa-laptop-code"></i>&nbsp;<li class="n-li">Skills</li>
-            </a>
-            <a href="#Services">
-                <i class="fa-solid fa-layer-group"></i>&nbsp; <li class="n-li">Services</li>
-            </a>
-            <a href="#Projects">
-                <i class="fa-regular fa-file-code"></i>&nbsp; <li class="n-li">Projects</li>
-            </a>
-            <a href="#Contact">
-                <i class="fa-solid fa-address-book"></i>&nbsp; <li class="n-li">Contact</li>
-            </a>
-            <i class="icon fa-solid fa-bars"></i>
+        <ul class="mobile-nav">
+            <div class="">
+                <a href="#About">
+                    <i class="fa-solid fa-user"></i>&nbsp;<li class="n-li">About</li>
+                </a>
+                <a href="#Skills">
+                    <i class="fa-solid fa-laptop-code"></i>&nbsp;<li class="n-li">Skills</li>
+                </a>
+                <a href="#Services">
+                    <i class="fa-solid fa-layer-group"></i>&nbsp; <li class="n-li">Services</li>
+                </a>
+                <a href="#Projects">
+                    <i class="fa-regular fa-file-code"></i>&nbsp; <li class="n-li">Projects</li>
+                </a>
+                <a href="#Contact">
+                    <i class="fa-solid fa-address-book"></i>&nbsp; <li class="n-li">Contact</li>
+                </a>
+
+            </div>
+            <i class="icon fa-solid fa-bars"
+                onclick="togglenav(event)"></i>
         </ul>
 
 
@@ -165,5 +169,9 @@
         </p>
     </footer>
 </body>
-
+<script>
+    const togglenav =(e)=>{
+        e.target.previousElementSibling.classList.toggle('hide')
+    }
+</script>
 </html>
