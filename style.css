@@ -493,10 +493,12 @@ body {
         object-fit: cover;
         aspect-ratio: 16/9;
     }
+
     #Projects .flex-div .pro-card .card-desc * {
         margin: 3px 0;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     }
+
     #Projects .flex-div .pro-card .card-desc h1 {
         font-size: 1.6rem;
         margin: 0 0;
@@ -508,10 +510,22 @@ body {
     #Contact {
         width: 400px;
         padding: 0;
-        overflow:hidden;
+        overflow: hidden;
     }
+
     #Contact .flex-div {
         flex-direction: column;
     }
-    
+
+    #Contact .flex-div .contact-form h3 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    #Contact .flex-div .contact-form h1 {
+        font-size: 1.3rem;
+    }
+    #Contact .flex-div .contact-form {
+        width: 20rem;
+    }
 }
