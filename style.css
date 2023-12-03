@@ -380,7 +380,7 @@ body {
     text-align: center;
     cursor: pointer;
     border-radius: 2rem;
-    padding:5px 0px;
+    padding: 5px 0px;
     margin-block: 10px;
     font-weight: 800;
     background: rgb(255, 255, 255);
@@ -639,12 +639,14 @@ body {
         padding: 0;
         overflow: hidden;
         margin: 0;
-        padding-top:5.5rem;
+        padding-top: 5rem;
     }
+
     #Contact .heading {
         font-size: 40px;
         color: white;
-    }    
+    }
+
     #Contact .flex-div {
         flex-direction: column;
     }
