@@ -58,8 +58,7 @@ body {
 
 #About {
     width: 100%;
-    margin-bottom: 100px;
-    padding-top: 9rem;
+    padding-top: 10rem;
 }
 
 #About .p-img {
@@ -144,19 +143,19 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4rem 0;
     align-items: center;
+    padding-top: 4rem;
+    margin-bottom: 0;
 }
 
 #Skills .flex-divs {
     display: flex;
     justify-content: center;
-    margin-bottom: 3rem;
+    margin-bottom: 0;
 }
 
 #Skills h1.heading {
     color: white;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 60px;
     margin: 40px 0;
 }
@@ -195,7 +194,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    padding-top: 5rem;
+}
 
+#Services .heading {
+    text-align: center;
+    color: white;
+    font-size: 60px;
+    margin-bottom: 2rem;
 }
 
 #Services .sContainer {
@@ -260,15 +267,14 @@ body {
 #Projects {
     width: 100vw;
     padding: 0;
-    margin-top: 2rem;
+    padding-top: 5rem;
 }
 
 #Projects h1.heading {
     color: white;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 60px;
     text-align: center;
-    padding-top: 40px;
+    padding-top: 0;
 }
 
 #Projects .flex-div {
@@ -288,6 +294,7 @@ body {
     border-radius: 4px;
     box-shadow: 0 0 10px rgb(9, 9, 9);
     margin: 2rem;
+    margin-top: .8rem;
     transition: all .4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -369,21 +376,19 @@ body {
 }
 
 #Contact .flex-div .contact-form .button {
-    width: 6rem;
-    height: 2.5rem;
-    margin-top: 2rem;
-    border-radius: 4%;
-    font-weight: 700;
+    width: 5rem;
+    text-align: center;
     cursor: pointer;
-    font-size: 20px;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    border-radius: 2rem;
+    padding:5px 0px;
+    margin-block: 10px;
+    font-weight: 800;
+    background: rgb(255, 255, 255);
+    border: 1px solid black;
+    box-shadow: 0 4px 15px black;
     text-decoration: none;
-    color: rgb(0, 0, 0);
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: black;
+    transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1);
 }
 
 #Contact .flex-div .contact-form .button:hover {
@@ -454,6 +459,8 @@ body {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        padding-top: 8rem;
+
     }
 
     #About .p-img {
@@ -486,13 +493,14 @@ body {
         margin-top: .4rem;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         text-align: center;
+        margin-top: .2rem;
     }
 
     #About .p-btn button,
     #About .p-btn {
         margin: 0;
         padding: 0;
-        margin-top: .7rem;
+        margin-top: 1rem;
         border: 0;
         outline: 0;
     }
@@ -503,9 +511,15 @@ body {
         min-width: 100%;
         padding: 0;
         margin: 0;
+        padding-top: 4.8rem;
+    }
+
+    #Skills h1.heading {
+        margin: 0;
     }
 
     #Skills .skill-card {
+        width: 15rem;
         font-size: .8rem;
         list-style: disc;
         background-color: #0D98BA;
@@ -514,23 +528,33 @@ body {
         border-radius: 5px;
         margin: .5rem;
         color: white;
-        padding: 5px 18px;
+        padding: 5px 28px;
         transition: all .7s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 
+    #Skills .flex-divs {
+        display: flex;
+        flex-direction: column;
+    }
+
     #Skills .skill-card h1 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         padding: 0px;
     }
 
     #Skills .skill-card li {
-        font-size: .7rem;
+        font-size: 1rem;
     }
 
     /* Services  */
 
     #Services {
         width: 100%;
+        flex-direction: column;
+    }
+
+    #Services .heading {
+        font-size: 40px;
     }
 
     #Services .sContainer {
@@ -558,7 +582,12 @@ body {
         /* width: 400px; */
         min-width: 100%;
         padding: 0;
+        padding-top: 5rem;
+    }
 
+    #Projects h1.heading {
+        font-size: 40px;
+        margin: 0;
     }
 
     #Projects .flex-div {
@@ -610,8 +639,12 @@ body {
         padding: 0;
         overflow: hidden;
         margin: 0;
+        padding-top:5.5rem;
     }
-
+    #Contact .heading {
+        font-size: 40px;
+        color: white;
+    }    
     #Contact .flex-div {
         flex-direction: column;
     }
@@ -640,7 +673,6 @@ body {
     #Contact .heading {
         font-size: 2.5rem;
         padding: 0;
-        margin: 0 0 10px 0;
     }
 
     /* footer 2 */
@@ -672,7 +704,7 @@ body {
         display: flex;
         width: fit-content;
         background-color: #040511;
-        background-color:rgb(28, 28, 25);
+        background-color: rgb(28, 28, 25);
         padding: 10px 20px;
         border-radius: 15rem;
         justify-content: center;
