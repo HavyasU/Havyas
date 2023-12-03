@@ -4,6 +4,7 @@
     box-sizing: border-box;
     outline: none;
     border: 0;
+    font-family: 'Frank Ruhl Libre', serif;
 }
 
 html {
@@ -32,8 +33,6 @@ body {
 }
 
 .page-heading .nav .name {
-    width: 40rem;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 40px;
     margin-right: 20rem;
     text-shadow: 0 0 10px rgb(255, 255, 255);
@@ -180,7 +179,7 @@ body {
 }
 
 #Skills .skill-card h1 {
-    font-size: 40px;
+    font-size: 50px;
     padding: 20px 0;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -189,9 +188,79 @@ body {
     font-size: 20px;
 }
 
+/* Services  */
+
+#Services {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#Services .sContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.sContainer .card {
+    width: 20rem;
+    height: 21rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    margin-inline: 1rem;
+    box-shadow: 0 0 10px black;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 10px 25px;
+}
+
+.sContainer .card .top {
+    overflow: hidden;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    width: 15rem;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sContainer .card .top img {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    object-fit: contain;
+}
+
+.sContainer .card .bot {
+    font-size: 17px;
+    overflow: hidden;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Frank Ruhl Libre', serif;
+    text-align: center;
+}
+
+.sContainer .card .bot h3 {
+    font-size: 29px;
+    padding: 5px;
+}
+
+
 #Projects {
     width: 100vw;
-    padding: 4rem 0;
+    padding: 0;
+    margin-top: 2rem;
 }
 
 #Projects h1.heading {
@@ -212,12 +281,12 @@ body {
 #Projects .flex-div .pro-card {
     width: 25rem;
     background-color: white;
-    padding: 30px 20px;
+    padding: 10px 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgb(115, 206, 232);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgb(9, 9, 9);
     margin: 2rem;
     transition: all .4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -228,19 +297,18 @@ body {
 
 #Projects .flex-div .pro-card .card-img {
     width: 100%;
-    height: 15rem;
-    background-color: red;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 9px;
 }
 
 #Projects .flex-div .pro-card .card-img img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 #Projects .flex-div .pro-card .card-desc * {
@@ -254,14 +322,12 @@ body {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    padding: 50px 0;
-    padding-top: 6rem;
+    padding-top: 2rem;
 }
 
 #Contact .heading {
     font-size: 3rem;
     color: white;
-    padding-bottom: 1.5rem;
 }
 
 #Contact .flex-div {
@@ -453,12 +519,37 @@ body {
     }
 
     #Skills .skill-card h1 {
-        font-size: 2rem;
+        font-size: 1.2rem;
         padding: 0px;
     }
 
     #Skills .skill-card li {
-        font-size: .9rem;
+        font-size: .7rem;
+    }
+
+    /* Services  */
+
+    #Services {
+        width: 100%;
+    }
+
+    #Services .sContainer {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    #Services .sContainer .card {
+        width: 18rem;
+        height: fit-content;
+    }
+    #Services .sContainer .card .bot h5
+    {
+        font-size: 12px;
+    }
+    #Services .sContainer .card .bot h3
+    {
+        font-size: 19px;
+        padding: 0;
     }
 
     /* Projects  */
@@ -583,5 +674,32 @@ body {
 
     #Contact .flex-div .contact-form {
         width: 15rem;
+    }
+}
+
+@media (min-width:601px) and (max-width:1240px) {
+    #About .p-img img {
+        width: 18rem;
+    }
+
+    #About {
+        margin: 0;
+    }
+
+    /* #About
+    {
+       
+    } */
+    #Skills .skill-card {
+        font-size: .8rem;
+        list-style: disc;
+        background-color: #0D98BA;
+        border: 1px dotted white;
+        box-shadow: 0 0 30px rgb(205, 201, 201);
+        border-radius: 5px;
+        margin: .5rem;
+        color: white;
+        padding: 5px 28px;
+        transition: all .7s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 }
