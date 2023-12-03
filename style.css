@@ -534,7 +534,7 @@ body {
     }
 
     #Services .sContainer {
-        width: 100%; 
+        width: 100%;
         flex-direction: column;
     }
 
@@ -542,12 +542,12 @@ body {
         width: 18rem;
         height: fit-content;
     }
-    #Services .sContainer .card .bot h5
-    {
+
+    #Services .sContainer .card .bot h5 {
         font-size: 12px;
     }
-    #Services .sContainer .card .bot h3
-    {
+
+    #Services .sContainer .card .bot h3 {
         font-size: 19px;
         padding: 0;
     }
