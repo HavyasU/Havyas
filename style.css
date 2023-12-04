@@ -434,6 +434,7 @@ body {
         width: auto;
         min-width: 100%;
         font-size: 20px;
+        height: 3rem;
     }
 
     .page-heading .nav .name {
@@ -583,6 +584,7 @@ body {
         min-width: 100%;
         padding: 0;
         padding-top: 5rem;
+        height: fit-content;
     }
 
     #Projects h1.heading {
@@ -596,6 +598,7 @@ body {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        height: min-content;
     }
 
     #Projects .flex-div .pro-card {
@@ -639,7 +642,7 @@ body {
         padding: 0;
         overflow: hidden;
         margin: 0;
-        padding-top: 5rem;
+        padding-top: 4.7rem;
     }
 
     #Contact .heading {
@@ -717,15 +720,14 @@ body {
     .page-heading .mobile-nav a {
         color: #ffffff;
         text-decoration: none;
-        background: #040511;
         border-radius: 50%;
         overflow: hidden;
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2rem;
+        height: 2rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid rgba(255, 223, 45, 0.764);
+        border: 2px solid rgba(255, 255, 253, 0.764);
     }
 
 }
