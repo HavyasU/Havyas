@@ -14,7 +14,10 @@ html {
 body {
     width: 100vw;
     height: 100%;
-    background: linear-gradient(45deg, #3b3f70, #40b0ff) no-repeat;
+    height: 100%;
+    /* background: linear-gradient(45deg, #51579c, #0a5991) no-repeat; */
+    background-image: linear-gradient(-20deg, #b721ff 0%, #06b0d6 100%);
+    overflow-x: hidden;
 }
 
 .page-heading .nav {
@@ -30,11 +33,12 @@ body {
     gap: 2rem;
     color: white;
     padding-right: 26px;
+    justify-content: flex-end;
 }
 
 .page-heading .nav .name {
     padding: 40px;
-    margin-right: 20rem;
+    margin-right: 33rem;
     text-shadow: 0 0 10px rgb(255, 255, 255);
     font-size: 2rem;
 }
@@ -58,7 +62,7 @@ body {
 
 #About {
     width: 100%;
-    padding-top: 10rem;
+    padding-top: 7rem;
 }
 
 #About .p-img {
@@ -71,7 +75,7 @@ body {
     background: linear-gradient(45deg, rgb(38, 70, 102), rgb(105, 105, 243));
     height: min-content;
     width: fit-content;
-    margin-top: 3.3rem;
+    margin-top: 3rem;
     margin-bottom: 0;
     padding: 0;
     object-fit: cover;
@@ -119,23 +123,49 @@ body {
     list-style: none;
 }
 
+
 #About .p-btn button {
     cursor: pointer;
     width: 8rem;
     height: 3rem;
     margin: 1rem;
-    border-radius: 2rem;
+    border-radius: 10px;
     font-weight: 800;
     background: rgb(255, 255, 255);
     border: 1px solid black;
-    box-shadow: 0 4px 15px black;
-    transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1);
+    transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1);
+    background-color: rgb(22, 255, 255);
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    outline: none;
+    /* border: 2px solid rgb(0, 0, 0); */
+    border: 2px solid rgba(3, 23, 98, 0.86);
+    /* box-shadow: 0 0 5px rgb(57, 55, 55); */
+    font-size: 16px;
 }
 
 #About .p-btn button:hover {
     background-color: cyan;
     border: 1px solid rgb(255, 255, 255);
     box-shadow: 0 0 20px white;
+    color: black;
+}
+
+#About .p-btn a:first-child button:nth-child(1) {
+    background-color: rgb(9, 12, 106);
+    background-color: rgba(0, 255, 255, 0.918);
+    border: 3px solid white;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    box-shadow: 0 0 10px cyan;
+    color: #000;
+}
+
+#About .p-btn button:hover,
+#About .p-btn a:first-child button:nth-child(1):hover {
+    background-color: cyan;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: 0 0 50px white;
+    color: black;
 }
 
 #Skills {
@@ -155,9 +185,10 @@ body {
 }
 
 #Skills h1.heading {
-    color: white;
-    font-size: 60px;
+    color: rgb(255, 255, 255);
     margin: 40px 0;
+    font-size: 50px;
+    font-family: 'Frank Ruhl Libre', serif;
 }
 
 #Skills .skill-card {
@@ -211,10 +242,11 @@ body {
     justify-content: center;
     align-items: center;
     gap: 2rem;
+    flex-wrap: wrap;
 }
 
 .sContainer .card {
-    width: 20rem;
+    width: 20rem; 
     height: 21rem;
     display: flex;
     justify-content: center;
@@ -376,25 +408,26 @@ body {
 }
 
 #Contact .flex-div .contact-form .button {
-    width: 5rem;
+    /* width: 5rem; */
     text-align: center;
     cursor: pointer;
-    border-radius: 2rem;
-    padding: 5px 0px;
+    border-radius: 20px;
+    padding: 10px 2px;
     margin-block: 10px;
     font-weight: 800;
     background: rgb(255, 255, 255);
-    border: 1px solid black;
-    box-shadow: 0 4px 15px black;
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: 0px 0 10px rgb(0, 0, 0);
     text-decoration: none;
-    color: black;
-    transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1);
+    color: rgb(255, 255, 255);
+    transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1);
+    background-image: linear-gradient(92.88deg, #2d56ea 9.16%, #6a54ff 43.89%, #5b25f0 64.72%);
 }
 
 #Contact .flex-div .contact-form .button:hover {
     background-color: cyan;
     border: 1px solid rgb(255, 255, 255);
-    box-shadow: 0 0 20px white;
+    box-shadow: 0 0 50px white;
 }
 
 #footer {
@@ -426,10 +459,6 @@ body {
 
 @media screen and (max-width: 600px) {
 
-    body {
-        background: linear-gradient(85deg, #363e96, #3192d7) no-repeat;
-    }
-
     .page-heading .nav {
         width: auto;
         min-width: 100%;
@@ -460,7 +489,7 @@ body {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        padding-top: 8rem;
+        padding-top: 4.5rem;
 
     }
 
@@ -501,9 +530,17 @@ body {
     #About .p-btn {
         margin: 0;
         padding: 0;
-        margin-top: 1rem;
-        border: 0;
+        margin-top: .5rem;
         outline: 0;
+    }
+
+    #About .p-btn a:first-child button:nth-child(1) {
+        background-color: rgb(9, 12, 106);
+        background-color: rgba(0, 255, 255, 0.918);
+        border: 2px solid white;
+        box-shadow: 0 0 10px rgb(0, 0, 0);
+        box-shadow: 0 0 10px cyan;
+        color: #000;
     }
 
     /* skills */
@@ -517,6 +554,8 @@ body {
 
     #Skills h1.heading {
         margin: 0;
+        font-size: 20px;
+        font-family: 'DM Serif Display', serif;
     }
 
     #Skills .skill-card {
@@ -625,6 +664,18 @@ body {
 
     #Projects .flex-div .pro-card .card-desc * {
         margin: 3px 0;
+        text-decoration: none;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    #Projects .flex-div .pro-card .card-desc a {
+        margin: 3px 0;
+        text-decoration: none;
+        margin-top: 1rem;
+        color: rgb(0, 0, 0);
+        font-weight: 600;
+        border-radius: 20px;
+        font-size: 1rem;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     }
 
@@ -700,7 +751,7 @@ body {
         display: block;
         position: fixed;
         z-index: 99;
-        bottom: 1rem;
+        bottom: .6rem;
         left: 50%;
         transform: translate(-50%);
     }
