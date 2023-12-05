@@ -819,8 +819,27 @@ body {
 }
 
 @media (min-width:601px) and (max-width:1240px) {
+
+    .page-heading .nav .name
+    {
+        padding: 0;
+        margin-right: 40px;
+    }
+    #About .p-desc
+    {
+        width: fit-content;
+        padding: 20px;
+        margin-right: 1rem;
+        margin-left:1rem;
+
+    }
+    #About .p-img 
+    {
+        margin-right:2rem;
+    }
     #About .p-img img {
         width: 18rem;
+
     }
 
     #About {
