@@ -33,7 +33,6 @@ body {
     gap: 2rem;
     color: white;
     padding-right: 26px;
-    justify-content: flex-end;
 }
 
 .page-heading .nav .name {
@@ -265,19 +264,20 @@ body {
     background-color: white;
     margin: 0;
     padding: 0;
-    width: 15rem;
-    height: 10rem;
     display: flex;
     justify-content: center;
+    width: fit-content;
+    height: fit-content;
 }
 
 .sContainer .card .top img {
-    width: 100%;
-    height: 100%;
     background-color: white;
     margin: 0;
     padding: 0;
+    width: 15rem;
+    max-height: 9rem;
     object-fit: contain;
+    overflow: hidden;
 }
 
 .sContainer .card .bot {
@@ -293,7 +293,12 @@ body {
 .sContainer .card .bot h3 {
     font-size: 29px;
     padding: 5px;
+    min-height: 40px;
 }
+.sContainer .card .bot h5 {
+    min-height: 70px;
+}
+
 
 
 #Projects {
@@ -352,6 +357,17 @@ body {
 
 #Projects .flex-div .pro-card .card-desc * {
     margin: 10px 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#Projects .flex-div .pro-card .card-desc a {
+    margin: 3px 0;
+    text-decoration: none;
+    margin-top: 1rem;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    border-radius: 20px;
+    font-size: 1rem;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
