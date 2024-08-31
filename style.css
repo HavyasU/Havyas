@@ -4,8 +4,11 @@
     box-sizing: border-box;
     outline: none;
     border: 0;
-    font-family: 'Frank Ruhl Libre', serif;
-}
+    /* font-family: 'Frank Ruhl Libre', serif; */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    scroll-behavior: smooth;
+}   
 
 html {
     width: fit-content;
@@ -16,11 +19,13 @@ body {
     height: 100%;
     height: 100%;
     /* background: linear-gradient(45deg, #51579c, #0a5991) no-repeat; */
-    background-image: linear-gradient(-20deg, #b721ff 0%, #06b0d6 100%);
+    /* background-image: linear-gradient(-20deg, #b721ff 0%, #06b0d6 100%); */
+    background-color: #19263a;
     overflow-x: hidden;
 }
 
 .page-heading .nav {
+    padding: 15px;
     height: 5rem;
     position: fixed;
     background-color: rgb(32, 32, 32);
@@ -37,7 +42,7 @@ body {
 
 .page-heading .nav .name {
     padding: 40px;
-    margin-right: 33rem;
+    margin-right: 30%;
     text-shadow: 0 0 10px rgb(255, 255, 255);
     font-size: 2rem;
 }
@@ -319,41 +324,67 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
-
-#Projects .flex-div .pro-card {
-    width: 25rem;
-    background-color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgb(9, 9, 9);
-    margin: 2rem;
-    margin-top: .8rem;
-    transition: all .4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-#Projects .flex-div .pro-card:hover {
-    box-shadow: 0 0 20px black;
-}
-
-#Projects .flex-div .pro-card .card-img {
-    width: 100%;
+#Projects .flex-div .pro-card{
+    width: 24rem;
+    height: 24rem;
     overflow: hidden;
+    margin: 15px;
+    padding: 5px 20px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px black;
+}
+#Projects .flex-div .pro-card .card-img{
+    width: 100%;
+    height: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    border-radius: 9px;
 }
 
-#Projects .flex-div .pro-card .card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+.skills-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px; /* Space between badges */
+    padding: 20px;
 }
+
+.skills-badges img {
+    margin-bottom: 12px;
+}
+
+@media screen and (max-width: 768px) {
+    .skills-badges {
+        gap: 10px; /* Adjust space for smaller screens */
+    }
+
+    .skills-badges img {
+        height: 30px; /* Resize the badges for mobile screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .skills-badges img {
+        height:30px; /* Further resize the badges for very small screens */
+    }
+}
+
+
+.pro-card .card-img img{
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    
+}
+
 
 #Projects .flex-div .pro-card .card-desc * {
     margin: 10px 0;
