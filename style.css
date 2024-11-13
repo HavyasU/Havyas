@@ -428,8 +428,7 @@ body {
     justify-content: center;
     flex-direction: column;
     padding: 1rem 1.5rem;
-    padding-left: 2.5rem;
-    margin: 2rem;
+    margin: 4rem;
     box-shadow: 0 6px 20px #212121;
     border-radius: 10px;
     transition: all .4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -458,7 +457,7 @@ body {
     /* width: 5rem; */
     text-align: center;
     cursor: pointer;
-    border-radius: 4rem;
+    border-radius:4px;
     padding: 10px 20px;
     margin-block: 10px;
     font-weight: 800;
@@ -467,11 +466,11 @@ body {
     text-decoration: none;
     color: rgb(255, 255, 255);
     transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1);
-    background-color: rgb(0, 0, 151);
+    background-color: black;
 }
 
 #Contact .flex-div .contact-form .button:hover {
-    background-color: rgb(73, 73, 255);
+    background-color:rgb(37, 37, 37);
     box-shadow: 0 0 20px rgb(109, 109, 109);
 }
 
