@@ -1,297 +1,503 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havyas U</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
-        integrity="your-integrity-code" crossorigin="anonymous">
+    <meta name="description" content="Havyas U - Full Stack Web Developer Portfolio">
+    <title>Havyas U | Full Stack Developer</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" href="images/havyasRai.jpg" type="image/x-icon">
-    <script src="https://kit.fontawesome.com/f275a9cb1d.js" crossorigin="anonymous"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&family=DM+Serif+Display:ital@1&family=Frank+Ruhl+Libre:wght@500&family=Hind:wght@600&family=Lato:ital,wght@0,400;1,300;1,900&family=Playfair+Display&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="./portfolio-Havyas/style.css">
-    <link rel="stylesheet" href="portfolio-Havyas/style.css">
-    <link rel="stylesheet" href="./style.css">
+
+    <!-- Icons -->
+    <script src="https://kit.fontawesome.com/f275a9cb1d.js" crossorigin="anonymous"></script>
+
+    <!-- Styles -->
+    <link rel="shortcut icon" href="images/havyasRai.jpg" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <header class="page-heading ">
-        <ul class="nav">
-            <h1 class="name">Havyas U</h1>
-            <a href="#About">
-                <i class="fa-solid fa-user"></i>&nbsp;<li class="n-li">About</li>
-            </a>
-            <a href="#Skills">
-                <i class="fa-solid fa-laptop-code"></i>&nbsp;<li class="n-li">Skills</li>
-            </a>
-            <a href="#Services">
-                <i class="fa-solid fa-layer-group"></i>&nbsp; <li class="n-li">Services</li>
-            </a>
-            <a href="#Projects">
-                <i class="fa-regular fa-file-code"></i>&nbsp; <li class="n-li">Projects</li>
-            </a>
-            <a href="#Contact">
-                <i class="fa-solid fa-address-book"></i>&nbsp; <li class="n-li">Contact</li>
-            </a>
-        </ul>
-        <ul class="mobile-nav hide">
-            <div class="nav-bar">
-                <a href="#About">
-                    <i class="fa-solid fa-user"></i>
-                </a>
-                <a href="#Skills">
-                    <i class="fa-solid fa-laptop-code"></i>
-                </a>
-                <a href="#Services">
-                    <i class=" fa-solid fa-layer-group"></i>
-                </a>
-                <a href="#Projects">
-                    <i class="fa-regular fa-file-code"></i>
-                </a>
-                <a href="#Contact">
-                    <i class="fa-solid fa-address-book"></i>
-                </a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">Havyas U<span>.</span></a>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <div class="mobile-menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
             </div>
-        </ul>
-    </header>
-    <div id="About">
+        </div>
+    </nav>
 
-        <div class="p-img">
-            <img src="./images/havyasRai.jpg" alt="" class="">
-        </div>
-        <div class="p-desc">
-            <h1>Hey! , I am Havyas,</h1>
-            <p>I Am <b>Full  Stack </b> Web Developer from Mangalore, Karnataka. <br>
-                Currently pursuing my BCA from the Mangalore University.</p>
-        </div>
-        <div class="p-btn">
-            <a download href="./havyasU_Resume.pdf"><button class="res-btn">Download CV</button></a>
-            <a href="#Contact">
-                <li class="n-li"><button class="res-btn">Let's Talk</button></li>
-            </a>
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay">
+        <div class="mobile-nav-links">
+            <a href="#about" class="mobile-link">About</a>
+            <a href="#education" class="mobile-link">Education</a>
+            <a href="#skills" class="mobile-link">Skills</a>
+            <a href="#services" class="mobile-link">Services</a>
+            <a href="#projects" class="mobile-link">Projects</a>
+            <a href="#contact" class="mobile-link">Contact</a>
         </div>
     </div>
-    <div id="Skills">
-        <h1 class="heading">My Skills</h1>
-        <div>
-            <div align="center" class="skills-badges">
-                <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge"
-                    height="40" alt="javascript logo" />
-                <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white&style=for-the-badge"
-                    height="40" alt="mongodb logo" />
-                <img src="https://img.shields.io/badge/Express-000000?logo=express&logoColor=white&style=for-the-badge"
-                    height="40" alt="express logo" />
-                <img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black&style=for-the-badge"
-                    height="40" alt="react logo" />
-                <img src="https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white&style=for-the-badge"
-                    height="40" alt="nodejs logo" />
-                <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white&style=for-the-badge"
-                    height="40" alt="html5 logo" />
-                <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge"
-                    height="40" alt="css3 logo" />
-                <img src="https://img.shields.io/badge/C-A8B9CC?logo=c&logoColor=black&style=for-the-badge" height="40"
-                    alt="c logo" />
-                <img src="https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=white&style=for-the-badge"
-                    height="40" alt="bootstrap logo" />
-                <img src="https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black&style=for-the-badge"
-                    height="40" alt="firebase logo" />
-                <img src="https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white&style=for-the-badge"
-                    height="40" alt="flask logo" />
-                <img src="https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white&style=for-the-badge"
-                    height="40" alt="git logo" />
-                <img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge"
-                    height="40" alt="github logo" />
-                <img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge"
-                    height="40" alt="mysql logo" />
-                <img src="https://img.shields.io/badge/Redux-764ABC?logo=redux&logoColor=white&style=for-the-badge"
-                    height="40" alt="redux logo" />
-                <img src="https://img.shields.io/badge/Stack Overflow-F58040?logo=stackoverflow&logoColor=black&style=for-the-badge"
-                    height="40" alt="stackoverflow logo" />
-                <img src="https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white&style=for-the-badge"
-                    height="40" alt="sqlite logo" />
-                <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?logo=tailwindcss&logoColor=black&style=for-the-badge"
-                    height="40" alt="tailwindcss logo" />
-                <img src="https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white&style=for-the-badge"
-                    height="40" alt="vercel logo" />
-                <img src="https://img.shields.io/badge/Sass-CC6699?logo=sass&logoColor=black&style=for-the-badge"
-                    height="40" alt="sass logo" />
-                <img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=for-the-badge"
-                    height="40" alt="python logo" />
-                <img src="https://img.shields.io/badge/C++-00599C?logo=cplusplus&logoColor=white&style=for-the-badge"
-                    height="40" alt="cplusplus logo" />
-                <img src="https://img.shields.io/badge/Socket.io-010101?logo=socketdotio&logoColor=white&style=for-the-badge"
-                    height="40" alt="socketio logo" />
-            </div>
-        </div>
 
-    </div>
-    <div id="Services">
-        <h1 class="heading">Services</h1>
-        <h3 class="heading sub-text ">What I can do for you..?</h1>
-            <div class="sContainer">
-                <div class="card">
-                    <section class="top">
-                        <img src="./images/website.jpg" class="websiteDesign-jpg" type="image/avif" alt="card-image">
-                    </section>
-                    <section class="bot">
-                        <h3>Website Design</h3>
-                        <h5>Transform your digital presence with our website design expertise. We specialize in creating
-                            visually appealing, user-centric websites that elevate your brand. Let's collaborate to make
-                            your online vision a reality.</h5>
-                    </section>
-                </div>
-                <div class="card">
-                    <section class="top">
-                        <img src="./images/graphicDesign.jpg" type="image/avif" alt="card-image">
-                    </section>
-                    <section class="bot">
-                        <h3>Graphic Design</h3>
-                        <h5>
-                            Revolutionize your brand with our graphic design expertise. We create visually stunning
-                            designs
-                            that resonate. Let's collaborate to transform your vision into captivating graphics that
-                            leave a
-                            lasting impression.</h5>
-                    </section>
-                </div>
-                <div class="card">
-                    <section class="top">
-                        <img src="./images/mobile_apps.jpg" type="image/avif" alt="card-image">
-                    </section>
-                    <section class="bot">
-                        <h3>Applications</h3>
-                        <h5>
-                            Revolutionize your brand with our unique mobile app expertise. We create seamless,
-                            impactful, and user-friendly apps. Let's collaborate to turn your distinctive app vision
-                            into a digital reality that stands out.</h5>
-                    </section>
-                </div>
-                <div class="card">
-                    <section class="top">
-                        <img src="./images/projectDesign.jpg" type="image/avif" alt="card-image">
-                    </section>
-                    <section class="bot">
-                        <h3>Project Design</h3>
-                        <h5>
-                            Elevate your projects with our design expertise. We specialize in creating visually
-                            stunning and impactful presentations. Lets transform your ideas into compelling visuals
-                            that showcase your academic brilliance.</h5>
-                    </section>
+    <!-- Hero Section -->
+    <section id="about" class="hero-section">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="greeting">Hey there, I'm</span>
+                <h1 class="hero-name">Havyas U</h1>
+                <h2 class="hero-title">Full Stack Developer</h2>
+                <p class="hero-description">
+                    Crafting robust and scalable web applications from Mangalore, Karnataka.
+                    Currently pursuing MCA at Nitte University.
+                </p>
+                <div class="hero-buttons">
+                    <a href="./havyasU_Resume.pdf" download class="btn btn-primary">Download CV <i
+                            class="fa-solid fa-download"></i></a>
+                    <a href="#contact" class="btn btn-secondary">Let's Talk</a>
                 </div>
             </div>
-    </div>
-    <div id="Projects">
-        <h1 class="heading">Projects</h1>
-        <div class="flex-div">
-            <div class="pro-card">
-                <div class="card-img">
-                    <img src="./images/connectimage.png" alt="Jiovan-Image">
+            <div class="hero-image-wrapper">
+                <div class="hero-image">
+                    <img src="./images/havyasRai.jpg" alt="Havyas U">
                 </div>
-                <div class="card-desc">
-                    <h1>Connect - Social Media</h1>
-                    <p>An Social Media Website Built with MERN. Consisting Authentication, Authorizaion, and CRUD
-                        operations </p>
-                    <a href="https://github.com/HavyasU">Github Link</a><br>
-                    <a href="#">Demo Link</a>
-                </div>
+                <!-- <div class="hero-blob"></div> -->
             </div>
+        </div>
+    </section>
 
-            <div class="pro-card">
-                <div class="card-img">
-                    <img src="./images/tomatoimage.png" alt="Jiovan-Image">
+    <!-- Stats Section (Alt Background) -->
+    <section class="stats-section section-alt">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h2>3+</h2>
+                    <p>Years Experience</p>
                 </div>
-                <div class="card-desc">
-                    <h1>Tomato - Delivery</h1>
-                    <p>An Food Delivery Web Application Built with MERN. Integrated with Stripe Payment Method.</p>
-                    <a href="https://github.com/HavyasU">Github Link</a><br>
-                    <a href="#">Demo Link</a>
+                <div class="stat-item">
+                    <h2>15+</h2>
+                    <p>Projects Delivered</p>
                 </div>
-            </div>
-            <div class="pro-card">
-                <div class="card-img">
-                    <img src="./images/ytClone.png" alt="Jiovan-Image">
-                </div>
-                <div class="card-desc">
-                    <h1>React Youtube Clone</h1>
-                    <p>Clone of React Youtube Using the Youtube API</p>
-                    <a href="https://github.com/HavyasU/Youtube-clone">Github Link</a><br>
-                    <a href="https://youtubeclonebyhavyas.vercel.app/">Demo Link</a>
-                </div>
-            </div>
-            <div class="pro-card">
-                <div class="card-img">
-                    <img src="./images/jiovanimage.png" alt="Jiovan-Image">
-                </div>
-                <div class="card-desc">
-                    <h1>Jiovan Music Website</h1>
-                    <p>A music playing website created using the Unofficial SAVAN api</p>
-                    <a href="https://github.com/HavyasU/JiovanMusic">Github Link</a><br>
-                    <a href="https://jiovan.onrender.com">Demo Link</a>
-                </div>
-            </div>
-            <div class="pro-card">
-                <div class="card-img">
-                    <img src="./images/e-comm-image.png" alt="Jiovan-Image">
-                </div>
-                <div class="card-desc">
-                    <h1>Amazon Interface Clone</h1>
-                    <p>Clone of Amazon Interface using React js</p>
-                    <a href="https://github.com/HavyasU/e-commerce-site">Github Link</a><br>
-                    <a href="https://e-commerce-site-nov2.vercel.app/">Demo Link</a>
-                </div>
-            </div>
-            <div class="pro-card">
-                <div class="card-img">
-                    <img src="./images/digiTemplate.png" alt="landing-Image">
-                </div>
-                <div class="card-desc">
-                    <h1>DigiTal Marketing - Template</h1>
-                    <p>A Template For Digital Marketing Agency Site using html, css, js</p>
-                    <a href="https://github.com/HavyasU/DigiNet---digital-Marketing">Github Link</a><br>
-                    <a href="https://havyasu.github.io/DigiNet---digital-Marketing/">Demo Link</a>
+                <div class="stat-item">
+                    <h2>10+</h2>
+                    <p>Happy Clients</p>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="Contact">
-        <h1 class="heading">Contact Me</h1>
-        <div class="flex-div">
-            <div class="contact-form">
-                <H1>E-MAIL</H1>
-                <h3>havyasu2005@gmail.com</h3>
-                <a class="button" type="button" href="mailto:havyasu2005@gmail.com">Mail</a>
-            </div>
-            <div class="contact-form">
-                <H1>Whatsapp</H1>
-                <h3>+91 7483989780</h3>
-                <a class="button" href="https://api.whatsapp.com/send?phone=7483989780&text=Hey%2C%20I%20would%20like%20to%20connect%20with%20you%21
-                ">Message</a>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section" style="padding-top: 4rem; padding-bottom: 4rem;">
+        <div class="container">
+            <h2 class="section-title" style="font-size: 2rem; margin-bottom: 2rem;">Education</h2>
+            <div class="education-grid">
+                <div class="education-card">
+                    <span class="edu-year">2025 - Present</span>
+                    <h3>Masters in Computer Applications (MCA)</h3>
+                    <h4>Nitte University</h4>
+                </div>
+                <div class="education-card">
+                    <span class="edu-year">2022 - 2025</span>
+                    <h3>Bachelors in Computer Applications (BCA)</h3>
+                    <h4>St. Philomena College, Puttur</h4>
+                </div>
             </div>
         </div>
-    </div>
-    <footer id="footer">
-        <p>
-            Copyright © 2023 Havyas U <br>
-            All rights reserved <br>
-            Email: havyasu2005@gmail.com <br>
-            Phone: +91 7483989780 <br>
-            <a href="https://www.linkedin.com/in/havyas-u-1220b3230/"><i class="fa-brands fa-linkedin"></i></a>
-            &nbsp;&nbsp;
-            <a href="https://github.com/HavyasU"><i class="fa-brands fa-github"></i></a><br>
-        </p>
+    </section>
+
+    <!-- Skills Section (Alt Background) -->
+    <section id="skills" class="section skills-section section-alt">
+        <div class="container">
+            <h2 class="section-title">My Tech Stack</h2>
+            <div class="skills-grid">
+                <!-- Frontend -->
+                <div class="skill-category">
+                    <h3>Frontend & Mobile</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fa-brands fa-react"></i> React Native</span>
+                        <span class="skill-tag"><i class="fa-brands fa-react"></i> React</span>
+                        <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript</span>
+                        <span class="skill-tag"><i class="fa-brands fa-html5"></i> HTML5</span>
+                        <span class="skill-tag"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
+                        <span class="skill-tag"><i class="fa-brands fa-bootstrap"></i> Bootstrap</span>
+                        <span class="skill-tag"><i class="fa-solid fa-wind"></i> Tailwind</span>
+                        <span class="skill-tag"><i class="fa-brands fa-sass"></i> Sass</span>
+                        <span class="skill-tag">Redux</span>
+                    </div>
+                </div>
+                <!-- Backend -->
+                <div class="skill-category">
+                    <h3>Backend</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fa-brands fa-node"></i> Node.js</span>
+                        <span class="skill-tag">Express</span>
+                        <span class="skill-tag"><i class="fa-brands fa-python"></i> Python</span>
+                        <span class="skill-tag">Flask</span>
+                        <span class="skill-tag">Socket.io</span>
+                    </div>
+                </div>
+                <!-- Database & Tools -->
+                <div class="skill-category">
+                    <h3>Database & Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fa-solid fa-database"></i> MongoDB</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">SQLite</span>
+                        <span class="skill-tag"><i class="fa-brands fa-google"></i> Firebase</span>
+                        <span class="skill-tag"><i class="fa-brands fa-git-alt"></i> Git</span>
+                        <span class="skill-tag"><i class="fa-brands fa-github"></i> GitHub</span>
+                        <span class="skill-tag">Vercel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section services-section">
+        <div class="container">
+            <h2 class="section-title">What I Do</h2>
+            <p class="section-subtitle">Comprehensive solutions for your digital needs</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3>Website Design</h3>
+                    <p>Visually appealing, user-centric websites that elevate your brand and create lasting impressions.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3>Graphic Design</h3>
+                    <p>Stunning visuals and branding materials that resonate with your audience and tell your story.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h3>Applications</h3>
+                    <p>Seamless, impactful, and user-friendly mobile and web applications tailored to your requirements.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-diagram-project"></i>
+                    </div>
+                    <h3>Project Design</h3>
+                    <p>Compelling visuals and structured presentations to showcase your academic or professional
+                        projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section (Alt Background) -->
+    <section id="projects" class="section projects-section section-alt">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="./images/connectimage.png" alt="Connect - Social Media">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU" target="_blank" aria-label="GitHub"><i
+                                        class="fa-brands fa-github"></i></a>
+                                <a href="https://connect.havyas.in" target="_blank" aria-label="Live Demo"><i
+                                        class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Connect - Social Media</h3>
+                        <p>A full-featured social media platform built with the MERN stack. Includes authentication,
+                            authorization, and complete CRUD operations.</p>
+                        <div class="project-tags">
+                            <span>MERN</span>
+                            <span>Auth</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="./images/tomatoimage.png" alt="Swwadishta - Food Delivery">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU" target="_blank"><i
+                                        class="fa-brands fa-github"></i></a>
+                                <a href="http://swwadishta.havyas.in/" target="_blank"><i
+                                        class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Tomato - Delivery</h3>
+                        <p>Food delivery web application integrated with Stripe payment gateway for seamless
+                            transactions.</p>
+                        <div class="project-tags">
+                            <span>MERN</span>
+                            <span>Stripe</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="./images/ytClone.png" alt="YouTube Clone">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU/Youtube-clone" target="_blank"><i
+                                        class="fa-brands fa-github"></i></a>
+                                <a href="https://youtube.havyas.in" target="_blank"><i
+                                        class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>React Youtube Clone</h3>
+                        <p>A functional clone of YouTube utilizing the rapid API to fetch and display video content.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>API</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="./images/jiovanimage.png" alt="Jiovan Music">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU/JiovanMusic" target="_blank"><i
+                                        class="fa-brands fa-github"></i></a>
+                                <a href="https://jiovan.onrender.com" target="_blank"><i
+                                        class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Jiovan Music</h3>
+                        <p>Music streaming application leveraging an unofficial Saavn API for a vast library of songs.
+                        </p>
+                        <div class="project-tags">
+                            <span>API</span>
+                            <span>Audio</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 5 -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="./images/e-comm-image.png" alt="Amazon Clone">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU/e-commerce-site" target="_blank"><i
+                                        class="fa-brands fa-github"></i></a>
+                                <a href="https://e-commerce-site-nov2.vercel.app/" target="_blank"><i
+                                        class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Amazon Interface Clone</h3>
+                        <p>Pixel-perfect recreation of the Amazon user interface using React.js.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>UI/UX</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 6
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="./images/digiTemplate.png" alt="Digital Marketing Template">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU/DigiNet---digital-Marketing" target="_blank"><i
+                                        class="fa-brands fa-github"></i></a>
+                                <a href="https://havyasu.github.io/DigiNet---digital-Marketing/" target="_blank"><i
+                                        class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>DigiNet Template</h3>
+                        <p>A professional landing page template designed for digital marketing agencies.</p>
+                        <div class="project-tags">
+                            <span>HTML/CSS</span>
+                            <span>Design</span>
+                        </div>
+                    </div>
+                </article> -->
+
+                <!-- More on GitHub -->
+                <article class="project-card">
+                    <div class="project-image"
+                        style="display: flex; justify-content: center; align-items: center; background-color: var(--bg-card-hover);">
+                        <i class="fa-brands fa-github" style="font-size: 4rem; color: var(--text-primary);"></i>
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://github.com/HavyasU" target="_blank" aria-label="Visit GitHub"><i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Explore More Work</h3>
+                        <p>Dive into my GitHub repository to explore more projects, experiments, and open-source
+                            contributions.</p>
+                        <div class="project-tags">
+                            <span>Open Source</span>
+                            <span>Experiments</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-wrapper">
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3>Email Me</h3>
+                    <p>havyasu2005@gmail.com</p>
+                    <a href="mailto:havyasu2005@gmail.com" class="btn-text">Send Email &rarr;</a>
+                </div>
+                <div class="contact-card">
+                    <div class="icon-box">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp</h3>
+                    <p>+91 7483989780</p>
+                    <a href="https://api.whatsapp.com/send?phone=7483989780&text=Hey%2C%20I%20would%20like%20to%20connect%20with%20you%21"
+                        target="_blank" class="btn-text">Chat Now &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/havyas-u-1220b3230/" target="_blank"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://github.com/HavyasU" target="_blank"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <p>&copy; 2023 Havyas U. All rights reserved.</p>
+            <p class="contact-info">
+                <span>havyasu2005@gmail.com</span>
+                <span>•</span>
+                <span>+91 7483989780</span>
+            </p>
+        </div>
     </footer>
+
+    <script>
+        (function () {
+            // Mobile Menu Logic
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileOverlay = document.querySelector('.mobile-nav-overlay');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            if (menuBtn && mobileOverlay) {
+                menuBtn.addEventListener('click', () => {
+                    mobileOverlay.classList.toggle('active');
+                    const icon = menuBtn.querySelector('i');
+                    if (mobileOverlay.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-xmark');
+                    } else {
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileOverlay.classList.remove('active');
+                        const icon = menuBtn.querySelector('i');
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+
+            // Theme Toggle Logic
+            const themeToggleBtn = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggleBtn.querySelector('i');
+            const htmlElement = document.documentElement;
+
+            // Check for saved user preference, if any, on load of the website
+            const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+
+            // Set default theme to light if no preference is saved, or respect saved preference
+            if (currentTheme) {
+                htmlElement.setAttribute('data-theme', currentTheme);
+                if (currentTheme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            } else {
+                // Default to light for this specific "aesthetic black and white" request
+                htmlElement.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                let theme = htmlElement.getAttribute('data-theme');
+                if (theme === 'light') {
+                    htmlElement.setAttribute('data-theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    htmlElement.setAttribute('data-theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        })();
+    </script>
 </body>
-<script>
-    const togglenav = (e) => {
-        e.target.previousElementSibling.classList.toggle('hide');
-    }
-</script>
 
 </html>
