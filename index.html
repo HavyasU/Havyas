@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -20,6 +20,21 @@
     <!-- Styles -->
     <link rel="shortcut icon" href="images/havyasRai.jpg" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Theme Init (Prevent FOUC) -->
+    <script>
+        (function () {
+            const currentTheme = localStorage.getItem('theme');
+            const htmlElement = document.documentElement;
+
+            if (currentTheme) {
+                htmlElement.setAttribute('data-theme', currentTheme);
+            } else {
+                // Default to dark if no preference
+                htmlElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -462,22 +477,12 @@
             const themeIcon = themeToggleBtn.querySelector('i');
             const htmlElement = document.documentElement;
 
-            // Check for saved user preference, if any, on load of the website
-            const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
-
-            // Set default theme to light if no preference is saved, or respect saved preference
-            if (currentTheme) {
-                htmlElement.setAttribute('data-theme', currentTheme);
-                if (currentTheme === 'dark') {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                }
+            // Update icon based on current theme (set in head)
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
             } else {
-                // Default to light for this specific "aesthetic black and white" request
-                htmlElement.setAttribute('data-theme', 'light');
                 themeIcon.classList.remove('fa-sun');
                 themeIcon.classList.add('fa-moon');
             }
