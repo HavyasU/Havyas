@@ -224,8 +224,6 @@ export default function HomePage() {
       ? works
       : works.filter((w) => w.category === activeCategory);
 
-  if (!mounted) return null;
-
   return (
     <div className="w-full">
       {/* ============================================
@@ -1139,15 +1137,7 @@ export default function HomePage() {
                   transition={{ duration: 0.2 }}
                   style={{ minHeight: "120px" }}
                 >
-                  <p
-                    style={{
-                      fontSize: "1.4rem",
-                      fontStyle: "italic",
-                      color: "var(--text-primary)",
-                      marginBottom: "2.5rem",
-                      lineHeight: "1.8",
-                    }}
-                  >
+                  <p className="testimonial-quote-text">
                     &ldquo;{testimonials[activeTestimonialIdx].quote}&rdquo;
                   </p>
                 </motion.div>
