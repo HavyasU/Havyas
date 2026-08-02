@@ -4,6 +4,7 @@ import { AuthProvider } from "@/lib/auth";
 import SmoothScrollProvider from "@/components/providers/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Havyas U | Full Stack Developer",
@@ -19,15 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className="h-full antialiased"
-      suppressHydrationWarning
-    >
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <head>
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
           rel="stylesheet"
@@ -61,12 +62,11 @@ export default function RootLayout({
         <AuthProvider>
           <SmoothScrollProvider>
             <Navbar />
-            <main className="flex-grow pt-[85px]">
-              {children}
-            </main>
+            <main className="flex-grow pt-[85px]">{children}</main>
             <Footer />
           </SmoothScrollProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
