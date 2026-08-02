@@ -73,6 +73,34 @@ const saveMockCollection = (name: string, data: any[]) => {
   window.dispatchEvent(new Event('mock-db-update'));
 };
 
+const addMockDocument = (name: string, data: any) => {
+  const list = getMockCollection(name);
+  const newId = Math.random().toString(36).substring(2, 9);
+  const newItem = {
+    ...data,
+    id: newId,
+    createdAt: new Date().toISOString(),
+  };
+  list.push(newItem);
+  saveMockCollection(name, list);
+  return newId;
+};
+
+const updateMockDocument = (name: string, id: string, data: any) => {
+  const list = getMockCollection(name);
+  const index = list.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    list[index] = { ...list[index], ...data };
+    saveMockCollection(name, list);
+  }
+};
+
+const deleteMockDocument = (name: string, id: string) => {
+  let list = getMockCollection(name);
+  list = list.filter((item) => item.id !== id);
+  saveMockCollection(name, list);
+};
+
 // ── Db Guard ────────────────────────────────────────────────────────
 function getDb(): Firestore {
   if (!db) throw new Error('Firebase not configured. Setup .env.local with credentials.');

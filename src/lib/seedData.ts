@@ -1,4 +1,4 @@
-import type { Service, Work, Experience, Testimonial } from "@/types";
+import type { Service, Work, Experience, Testimonial, Education } from "@/types";
 
 export const seedServices: Omit<Service, "id">[] = [
   {
