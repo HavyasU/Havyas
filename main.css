@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="contentFrame" src="https://app.emergent.sh/loading-preview?host=afsec-precision.preview.emergentagent.com" allowfullscreen></iframe>
+    <script>
+        // Listen for messages from the iframe
+        window.addEventListener('message', function(event) {
+
+        	console.log(event.origin);
+            // Optional: Add origin check for security
+            // if (!['https://dev.emergentagent.com', 'https://app.emergent.sh'].includes(event.origin)) return;
+
+            if (event.data && event.data.type === 'reload') {
+                const iframe = document.getElementById('contentFrame');
+                window.location.reload();
+            }
+
+            if (event.data && event.data.type === 'url') {
+                const iframe = document.getElementById('contentFrame');
+                window.open(event.data.url, '_blank');
+            }
+        });
+    </script>
+</body>
+</html>
