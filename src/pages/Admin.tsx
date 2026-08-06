@@ -470,6 +470,7 @@ export default function Admin() {
               {activeTab === 'services' && (
                 <>
                   <div><label className="text-xs font-bold text-slate-500 uppercase">Title</label><input required name="title" value={formData.title||''} onChange={handleFormChange} className="w-full border p-3 rounded-xl mt-1"/></div>
+                  <div><label className="text-xs font-bold text-slate-500 uppercase">Description</label><textarea required name="desc" value={formData.desc||''} onChange={handleFormChange} className="w-full border p-3 rounded-xl mt-1 h-24"/></div>
                   <div><label className="text-xs font-bold text-slate-500 uppercase">Icon Emoji</label><input name="icon" value={formData.icon||''} onChange={handleFormChange} className="w-full border p-3 rounded-xl mt-1"/></div>
                   <div>
                     <label className="text-xs font-bold text-slate-500 uppercase">Image</label>

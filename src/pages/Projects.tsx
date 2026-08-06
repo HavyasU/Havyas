@@ -8,10 +8,12 @@ const categories = ['All', 'Infrastructure', 'Hydrographic', 'Industrial', 'Avia
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [allProjects, setAllProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, 'projects'), (snap) => {
       setAllProjects(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setLoading(false);
     });
     return () => unsub();
   }, []);
@@ -19,6 +21,14 @@ export default function Projects() {
   const filtered = activeFilter === 'All'
     ? allProjects
     : allProjects.filter(p => p.category === activeFilter);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#1976ff] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white">

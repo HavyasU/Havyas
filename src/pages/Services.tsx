@@ -3,15 +3,27 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { X } from 'lucide-react';
 export default function Services() {
   const [allServices, setAllServices] = useState<any[]>([]);
+  const [selectedService, setSelectedService] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, 'services'), (snap) => {
       setAllServices(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setLoading(false);
     });
     return () => unsub();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#1976ff] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white">
@@ -34,6 +46,7 @@ export default function Services() {
             {allServices.map((svc, idx) => (
               <div
                 key={idx}
+                onClick={() => setSelectedService(svc)}
                 className="group relative rounded-2xl overflow-hidden h-64 border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer"
               >
                 <img
@@ -77,6 +90,20 @@ export default function Services() {
           </Link>
         </div>
       </section>
+
+      {/* MODAL */}
+      {selectedService && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setSelectedService(null)}>
+          <div className="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition-colors">
+              <X size={24} />
+            </button>
+            <div className="text-4xl mb-4">{selectedService.icon || '📌'}</div>
+            <h2 className="text-2xl font-black text-slate-900 mb-4">{selectedService.title}</h2>
+            <p className="text-slate-600 leading-relaxed text-lg">{selectedService.desc || 'Detailed information coming soon.'}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

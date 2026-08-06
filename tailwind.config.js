@@ -35,11 +35,16 @@ export default {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-33.33%)' },
+        },
       },
       animation: {
         fadeUp: 'fadeUp 0.7s ease forwards',
         fadeIn: 'fadeIn 0.5s ease forwards',
         slideIn: 'slideIn 0.6s ease forwards',
+        marquee: 'marquee 25s linear infinite',
       },
     },
   },

@@ -23,17 +23,25 @@ const industries = [
 ];
 
 export default function About() {
-  const statsData = useSiteContent('stats', { items: [
+  const [statsData, statsLoading] = useSiteContent('stats', { items: [
     { val: '25+', label: 'Years of Excellence' },
     { val: '15000+', label: 'Projects Completed' },
     { val: '5000+', label: 'Satisfied Clients' },
     { val: '100+', label: 'Team Members' },
   ]});
 
-  const vmData = useSiteContent('vision_mission', {
+  const [vmData, vmLoading] = useSiteContent('vision_mission', {
     vision: { title: 'Our Vision', text: 'To be the Middle East\'s most trusted geospatial partner, setting the benchmark for precision and innovation.', image: '' },
     mission: { title: 'Our Mission', text: 'To deliver surveying and engineering solutions that enable infrastructure development with uncompromising accuracy.', image: '' }
   });
+
+  if (statsLoading || vmLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#1976ff] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white">

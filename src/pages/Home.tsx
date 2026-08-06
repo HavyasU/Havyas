@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowDown } from 'lucide-react';
+import { ArrowUpRight, ArrowDown, X } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -11,6 +11,7 @@ import InfiniteMarquee from '../components/InfiniteMarquee';
 import AccordionFlexCards from '../components/AccordionFlexCards';
 import TechnologiesSlider from '../components/TechnologiesSlider';
 import TestimonialSlider from '../components/TestimonialSlider';
+import GallerySlider from '../components/GallerySlider';
 import { db } from '../lib/firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useSiteContent } from '../hooks/useSiteContent';
@@ -36,18 +37,27 @@ export default function Home() {
   const [projects, setProjects] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
+  const [projectsLoading, setProjectsLoading] = useState(true);
+  const [testimonialsLoading, setTestimonialsLoading] = useState(true);
+  const [servicesLoading, setServicesLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState<any | null>(null);
   
   // Dynamic Content
-  const statsData = useSiteContent('stats', { items: [
+  const [statsData, statsLoading] = useSiteContent('stats', { items: [
     { val: '25+', label: 'Years of Excellence' },
     { val: '15000+', label: 'Projects Completed' },
     { val: '5000+', label: 'Satisfied Clients' },
     { val: '100+', label: 'Team Members' },
   ]});
-  const clientLogosData = useSiteContent('client_logos', { items: [
-    'MINISTRY OF INFRASTRUCTURE', 'MERIDIAN DEVELOPMENTS', 'GULF ENERGY', 'METRO AUTHORITY', 'CIVIL AVIATION', 'PORTS & MARINE'
+  const [clientLogosData, clientLogosLoading] = useSiteContent('client_logos', { items: [
+    { name: 'MINISTRY OF INFRASTRUCTURE', logo: '' }, 
+    { name: 'MERIDIAN DEVELOPMENTS', logo: '' }, 
+    { name: 'GULF ENERGY', logo: '' }, 
+    { name: 'METRO AUTHORITY', logo: '' }, 
+    { name: 'CIVIL AVIATION', logo: '' }, 
+    { name: 'PORTS & MARINE', logo: '' }
   ]});
-  const whyChooseData = useSiteContent('why_choose_us', { items: [
+  const [whyChooseData, whyChooseLoading] = useSiteContent('why_choose_us', { items: [
     { id: '1', number: '01', title: 'Engineering Accuracy', description: 'Sub-millimetre precision backed by rigorous quality control at every stage.', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80' },
     { id: '2', number: '02', title: 'Certified Experts', description: 'A century of combined field experience across surveying disciplines.', image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80' },
     { id: '3', number: '03', title: 'Advanced Technology', description: 'The latest LiDAR, UAV and GNSS instrumentation in the region.', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80' },
@@ -56,17 +66,60 @@ export default function Home() {
     { id: '6', number: '06', title: '3D Modelling & Digital Twins', description: 'Photorealistic digital twins and BIM-ready deliverables.', image: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&q=80' },
   ]});
 
+  const [techData, techLoading] = useSiteContent('technologies', { 
+    heading: 'Instruments of precision.', 
+    description: 'Our multi-million dollar fleet of surveying instrumentation represents the absolute state-of-the-art in geospatial data acquisition.',
+    items: [
+      { code: 'T01', title: 'UAV / Drone Fleet', description: 'High-end VTOL fixed-wing and multirotor UAV platforms equipped with RTK/PPK GNSS receivers for large-scale topographic mapping.', img: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=800&q=80' },
+      { code: 'T02', title: '3D Terrestrial LiDAR', description: 'Ultra-high-speed laser scanners capturing dense 3D point clouds with sub-millimetric resolution for industrial plants and heritage buildings.', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80' },
+      { code: 'T03', title: 'Mobile Mapping Systems', description: 'Vehicle-mounted dual LiDAR sensors and 360° spherical camera rigs for rapid highway, rail, and municipal asset inventory.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80' },
+      { code: 'T04', title: 'Multi-Frequency GNSS RTK', description: 'GPS, GLONASS, Galileo, and Beidou CORS network integrated receivers enabling instant centimeter-level baseline field positioning.', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80' },
+      { code: 'T05', title: 'Underground GPR', description: 'Ground penetrating radar systems for non-destructive utility locating, void detection, and underground infrastructure mapping.', img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80' },
+      { code: 'T06', title: 'Multibeam Bathymetry', description: 'Acoustic multibeam echosounders and motion sensors for deep-water marine surveys, port dredging inspection, and underwater navigation.', img: 'https://images.unsplash.com/photo-1513553404607-988bf2703777?w=800&q=80' },
+    ]
+  });
+
+  const [compSliderData, compSliderLoading] = useSiteContent('comparison_slider', { 
+    beforeImage: 'https://images.unsplash.com/photo-1541888087425-ce81df8219fa?w=1600&q=80',
+    afterImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80'
+  });
+
+  const [galleryData, galleryLoading] = useSiteContent('gallery', {
+    items: [
+      { image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80' },
+      { image: 'https://images.unsplash.com/photo-1541888087425-ce81df8219fa?w=800&q=80' },
+      { image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80' },
+      { image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=800&q=80' },
+      { image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80' }
+    ]
+  });
+
   useEffect(() => {
-    const unsubP = onSnapshot(collection(db, 'projects'), (snap) => setProjects(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-    const unsubT = onSnapshot(collection(db, 'testimonials'), (snap) => setTestimonials(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-    const unsubS = onSnapshot(collection(db, 'services'), (snap) => setServices(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+    const unsubP = onSnapshot(collection(db, 'projects'), (snap) => {
+      setProjects(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setProjectsLoading(false);
+    });
+    const unsubT = onSnapshot(collection(db, 'testimonials'), (snap) => {
+      setTestimonials(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setTestimonialsLoading(false);
+    });
+    const unsubS = onSnapshot(collection(db, 'services'), (snap) => {
+      setServices(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setServicesLoading(false);
+    });
     return () => { unsubP(); unsubT(); unsubS(); };
   }, []);
+
+  const isDataLoading = statsLoading || clientLogosLoading || whyChooseLoading || techLoading || compSliderLoading || galleryLoading || projectsLoading || testimonialsLoading || servicesLoading;
+
+  // Moved loading check below hooks
 
   const container = useRef<HTMLDivElement>(null);
   const heroImgRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (isDataLoading) return;
+
     // 1. Hero Animations
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
     
@@ -123,7 +176,15 @@ export default function Home() {
         }
       );
     });
-  }, { scope: container });
+  }, { scope: container, dependencies: [isDataLoading] });
+
+  if (isDataLoading) {
+    return (
+      <div className="min-h-screen bg-[#050f1c] flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div ref={container} className="bg-white overflow-x-hidden">
@@ -300,10 +361,10 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-[1400px] mx-auto px-6 lg:px-10">
           {services.slice(0, 8).map((svc, idx) => (
-              <Link
+              <div
                 key={idx}
-                to="/services"
-                className="group relative block rounded-2xl overflow-hidden h-64 border border-slate-200 shadow-sm hover:shadow-xl transition-shadow duration-500"
+                onClick={() => setSelectedService(svc)}
+                className="group relative block rounded-2xl overflow-hidden h-64 border border-slate-200 shadow-sm hover:shadow-xl transition-shadow duration-500 cursor-pointer"
               >
                 <img
                   src={svc.img}
@@ -322,14 +383,14 @@ export default function Home() {
                     className="absolute top-6 right-6 text-white/50 group-hover:text-cyan-400 group-hover:rotate-45 transition-all duration-300"
                   />
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ═══ 7. TECHNOLOGIES SLIDER ═══ */}
-      <TechnologiesSlider />
+      <TechnologiesSlider heading={techData.heading} description={techData.description} items={techData.items || []} />
 
       {/* ═══ 8. PROCESS SECTION ═══ */}
       {/* ═══ 9. FEATURED PROJECTS SLIDER ═══ */}
@@ -355,8 +416,8 @@ export default function Home() {
 
           <div className="w-full mb-20">
             <ImageComparisonSlider 
-              beforeImage="https://images.unsplash.com/photo-1541888087425-ce81df8219fa?w=1600&q=80"
-              afterImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80"
+              beforeImage={compSliderData.beforeImage || "https://images.unsplash.com/photo-1541888087425-ce81df8219fa?w=1600&q=80"}
+              afterImage={compSliderData.afterImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80"}
             />
           </div>
 
@@ -418,7 +479,10 @@ export default function Home() {
         <TestimonialSlider testimonials={testimonials} />
       </section>
 
-      {/* ═══ 11. CTA BANNER ═══ */}
+      {/* ═══ 11. GALLERY ═══ */}
+      <GallerySlider images={galleryData.items || []} />
+
+      {/* ═══ 12. CTA BANNER ═══ */}
       <section className="py-24 bg-slate-50 relative overflow-hidden border-t border-slate-100 gsap-section">
         <div className="absolute inset-0 blueprint-grid opacity-20 pointer-events-none mix-blend-multiply" />
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10 text-center">
@@ -438,6 +502,20 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* SERVICES MODAL */}
+      {selectedService && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setSelectedService(null)}>
+          <div className="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition-colors">
+              <X size={24} />
+            </button>
+            <div className="text-4xl mb-4">{selectedService.icon || '📌'}</div>
+            <h2 className="text-2xl font-black text-slate-900 mb-4">{selectedService.title}</h2>
+            <p className="text-slate-600 leading-relaxed text-lg">{selectedService.desc || 'Detailed information coming soon.'}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

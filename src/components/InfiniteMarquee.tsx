@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface InfiniteMarqueeProps {
-  items: string[];
+  items: { name: string; logo?: string }[];
   title?: string;
 }
 
@@ -26,14 +26,26 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
 
       <div className="overflow-hidden flex">
         <div className="animate-marquee flex items-center whitespace-nowrap">
-          {marqueeItems.map((item, index) => (
-            <span
-              key={index}
-              className="mx-10 font-bold text-lg md:text-xl lg:text-2xl text-slate-500 hover:text-cyan-400 transition-colors duration-300 cursor-default tracking-wide uppercase font-mono"
-            >
-              {item}
-            </span>
-          ))}
+          {marqueeItems.map((item, index) => {
+            const name = typeof item === 'string' ? item : item.name;
+            const logo = typeof item === 'object' ? item.logo : null;
+            
+            return (
+              <div
+                key={index}
+                className="mx-8 md:mx-16 flex flex-col items-center justify-center gap-3 cursor-default group"
+              >
+                {logo ? (
+                  <img src={logo} alt={name} className="h-16 md:h-20 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100" />
+                ) : (
+                  <div className="h-16 md:h-20 flex items-center justify-center">
+                    <span className="text-xl md:text-3xl font-black text-slate-700 tracking-wider group-hover:text-cyan-400 transition-colors">{name}</span>
+                  </div>
+                )}
+                {logo && <span className="text-[10px] md:text-xs font-semibold text-slate-600 uppercase tracking-widest">{name}</span>}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
