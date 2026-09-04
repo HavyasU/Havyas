@@ -6,7 +6,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sun, Moon, Menu, X } from "lucide-react"; // Fallback if FA is loading
 
 const navLinks = [
   { href: "#education", label: "Education" },
@@ -20,24 +19,23 @@ export default function Navbar() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const pathname = usePathname();
 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme && (savedTheme === "light" || savedTheme === "dark")) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+  }, []);
+
   // Hide Navbar in Admin pages
   if (pathname?.startsWith("/admin")) {
     return null;
   }
-
-  /* eslint-disable react-hooks/rules-of-hooks */
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    const initialTheme = savedTheme || "dark";
-    setTheme(initialTheme);
-    document.documentElement.setAttribute("data-theme", initialTheme);
-    if (initialTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-  /* eslint-enable react-hooks/rules-of-hooks */
 
   const toggleTheme = () => {
     const nextTheme = theme === "light" ? "dark" : "light";

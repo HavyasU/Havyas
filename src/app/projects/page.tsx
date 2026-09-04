@@ -9,22 +9,28 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { subscribeToWorks } from "@/lib/firestore";
+import { seedWorks } from "@/lib/seedData";
 import type { Work } from "@/types";
 import PageTransition from "@/components/motion/PageTransition";
 
+const initialWorks: Work[] = seedWorks.map((w, i) => ({ id: String(i + 1), ...w }));
+const initialCategories: string[] = Array.from(new Set(seedWorks.map((w) => w.category).filter(Boolean)));
+
 export default function ProjectsPage() {
-  const [works, setWorks] = useState<Work[]>([]);
+  const [works, setWorks] = useState<Work[]>(initialWorks);
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>(initialCategories);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const unsub = subscribeToWorks((data) => {
-      setWorks(data);
-      const cats = Array.from(
-        new Set(data.map((w) => w.category).filter(Boolean)),
-      );
-      setCategories(cats);
+      if (data && data.length > 0) {
+        setWorks(data);
+        const cats = Array.from(
+          new Set(data.map((w) => w.category).filter(Boolean)),
+        );
+        setCategories(cats);
+      }
       setLoading(false);
     });
     return () => unsub();

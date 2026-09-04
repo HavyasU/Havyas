@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
+import PageTransition from "@/components/motion/PageTransition";
 import {
   subscribeToWorks,
   subscribeToServices,
@@ -16,6 +17,13 @@ import {
   subscribeToResumeUrl,
   addInquiry,
 } from "@/lib/firestore";
+import {
+  seedServices,
+  seedWorks,
+  seedExperiences,
+  seedTestimonials,
+  seedEducation,
+} from "@/lib/seedData";
 import type {
   Work,
   Service,
@@ -26,18 +34,25 @@ import type {
 
 gsap.registerPlugin(ScrollTrigger);
 
+const initialWorks: Work[] = seedWorks.map((w, i) => ({ id: String(i + 1), ...w }));
+const initialServices: Service[] = seedServices.map((s, i) => ({ id: String(i + 1), ...s }));
+const initialExperiences: Experience[] = seedExperiences.map((e, i) => ({ id: String(i + 1), ...e }));
+const initialTestimonials: Testimonial[] = seedTestimonials.map((t, i) => ({ id: String(i + 1), ...t }));
+const initialEducation: Education[] = seedEducation.map((e, i) => ({ id: String(i + 1), ...e }));
+const initialCategories: string[] = Array.from(new Set(seedWorks.map((w) => w.category).filter(Boolean)));
+
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
-  const [services, setServices] = useState<Service[]>([]);
-  const [works, setWorks] = useState<Work[]>([]);
-  const [experiences, setExperiences] = useState<Experience[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [educationList, setEducationList] = useState<Education[]>([]);
+  const [services, setServices] = useState<Service[]>(initialServices);
+  const [works, setWorks] = useState<Work[]>(initialWorks);
+  const [experiences, setExperiences] = useState<Experience[]>(initialExperiences);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
+  const [educationList, setEducationList] = useState<Education[]>(initialEducation);
   const [resumeUrl, setResumeUrl] = useState<string>("/havyasU_Resume.pdf");
 
   // Projects filtering
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>(initialCategories);
 
   // Testimonials active slide
   const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
@@ -58,20 +73,36 @@ export default function HomePage() {
   useEffect(() => {
     setMounted(true);
 
-    const unsubServices = subscribeToServices(setServices);
-    const unsubWorks = subscribeToWorks((data) => {
-      setWorks(data);
-      const cats = Array.from(
-        new Set(data.map((w) => w.category).filter(Boolean)),
-      );
-      setCategories(cats);
+    const unsubServices = subscribeToServices((data) => {
+      if (data && data.length > 0) setServices(data);
     });
-    const unsubExp = subscribeToExperiences(setExperiences);
-    const unsubTestimonials = subscribeToTestimonials(setTestimonials);
-    const unsubEdu = subscribeToEducation(setEducationList);
+    const unsubWorks = subscribeToWorks((data) => {
+      if (data && data.length > 0) {
+        setWorks(data);
+        const cats = Array.from(
+          new Set(data.map((w) => w.category).filter(Boolean)),
+        );
+        setCategories(cats);
+      }
+    });
+    const unsubExp = subscribeToExperiences((data) => {
+      if (data && data.length > 0) setExperiences(data);
+    });
+    const unsubTestimonials = subscribeToTestimonials((data) => {
+      if (data && data.length > 0) setTestimonials(data);
+    });
+    const unsubEdu = subscribeToEducation((data) => {
+      if (data && data.length > 0) setEducationList(data);
+    });
     const unsubResume = subscribeToResumeUrl(setResumeUrl);
 
+    // Refresh ScrollTrigger smoothly once layout is settled
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 400);
+
     return () => {
+      clearTimeout(timer);
       unsubServices();
       unsubWorks();
       unsubExp();
@@ -225,7 +256,7 @@ export default function HomePage() {
       : works.filter((w) => w.category === activeCategory);
 
   return (
-    <div className="w-full">
+    <PageTransition>
       {/* ============================================
          Hero Section
          ============================================ */}
@@ -1380,6 +1411,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </div>
+    </PageTransition>
   );
 }
