@@ -49,6 +49,35 @@ const defaultServiceImages = [
   "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
 ];
 
+function getServiceIcon(title: string, index: number, existingIcon?: string): string {
+  if (
+    existingIcon &&
+    existingIcon !== "fa-code" &&
+    existingIcon.trim() !== ""
+  ) {
+    return existingIcon;
+  }
+  const t = (title || "").toLowerCase();
+  if (t.includes("web") || t.includes("site")) return "fa-laptop-code";
+  if (t.includes("app") || t.includes("mobile") || t.includes("android") || t.includes("ios"))
+    return "fa-mobile-screen-button";
+  if (t.includes("design") || t.includes("ui") || t.includes("ux") || t.includes("brand"))
+    return "fa-palette";
+  if (t.includes("api") || t.includes("backend") || t.includes("server"))
+    return "fa-server";
+  if (t.includes("devops") || t.includes("cloud") || t.includes("maint"))
+    return "fa-gauge-high";
+
+  const fallbackIcons = [
+    "fa-laptop-code",
+    "fa-mobile-screen-button",
+    "fa-palette",
+    "fa-server",
+    "fa-gauge-high",
+  ];
+  return fallbackIcons[index % fallbackIcons.length];
+}
+
 function getEnrichedService(service: Service, index: number): Service {
   const seedMatch =
     seedServices[index] ||
@@ -57,6 +86,11 @@ function getEnrichedService(service: Service, index: number): Service {
     );
   return {
     ...service,
+    iconName: getServiceIcon(
+      service.title,
+      index,
+      service.iconName || seedMatch?.iconName
+    ),
     imageUrl:
       service.imageUrl && service.imageUrl.trim() !== ""
         ? service.imageUrl
@@ -531,7 +565,7 @@ export default function HomePage() {
             <span className="section-badge">
               <i className="fa-solid fa-graduation-cap"></i> Academics
             </span>
-            <h2 className="section-title">Education & Credentials</h2>
+            <h2 className="section-title">Education</h2>
             <p className="section-subtitle">
               Academic foundations, technical degrees, and ongoing computer science research
             </p>
@@ -540,7 +574,7 @@ export default function HomePage() {
           <div className="education-grid">
             {educationList.length === 0 ? (
               <p className="text-text-secondary italic text-center col-span-full">
-                No education credentials added yet.
+                No education history added yet.
               </p>
             ) : (
               educationList.map((edu) => (
@@ -858,7 +892,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {works.length === 0 ? (
               <p className="text-text-secondary italic text-center col-span-full py-8">
                 No projects loaded yet.
@@ -893,11 +927,11 @@ export default function HomePage() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          gap: "0.75rem",
+                          gap: "0.6rem",
                           opacity: 0,
                           transition: "opacity 0.3s ease",
                           zIndex: 10,
-                          borderRadius: "16px",
+                          borderRadius: "12px",
                         }}
                       >
                         <a
@@ -921,29 +955,29 @@ export default function HomePage() {
                     </div>
 
                     {/* Card Metadata */}
-                    <div className="flex-grow flex flex-col justify-between">
+                    <div className="flex-grow flex flex-col justify-between pt-0.5">
                       <div>
                         {/* Title & Arrow Link */}
-                        <div className="flex justify-between items-start mb-1.5">
-                          <h3 className="text-xl font-bold text-text-primary tracking-tight">
+                        <div className="flex justify-between items-start mb-1">
+                          <h3 className="text-lg font-bold text-text-primary tracking-tight">
                             {work.title}
                           </h3>
-                          <span className="text-lg text-text-secondary font-light">
+                          <span className="text-base text-text-secondary font-light">
                             ↗
                           </span>
                         </div>
 
                         {/* Subtitle / Client */}
-                        <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
+                        <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wider mb-2">
                           {work.client || work.category}
                         </p>
 
                         {/* Tags Pill List */}
-                        <div className="flex flex-wrap gap-2 mb-5">
+                        <div className="flex flex-wrap gap-1.5 mb-3.5">
                           {work.tags?.map((tag) => (
                             <span
                               key={tag}
-                              className="text-xs px-2.5 py-1 rounded-md bg-bg-section-alt border border-border-color text-text-secondary font-medium"
+                              className="text-[11px] px-2 py-0.5 rounded-md bg-bg-section-alt border border-border-color text-text-secondary font-medium"
                             >
                               {tag}
                             </span>
@@ -954,7 +988,7 @@ export default function HomePage() {
                       {/* Case Study Page Link Button */}
                       <Link
                         href={`/projects/${work.id}`}
-                        className="btn btn-primary w-full text-center py-3 rounded-xl text-xs font-bold uppercase tracking-wider block"
+                        className="btn btn-primary w-full text-center py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider block"
                       >
                         View Case Study &rarr;
                       </Link>
@@ -965,10 +999,10 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className="text-center mt-14">
+          <div className="text-center mt-10">
             <Link
               href="/projects"
-              className="btn btn-secondary px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2.5 shadow-sm"
+              className="btn btn-secondary px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 shadow-sm"
             >
               Explore All Projects & Case Studies (
               {works.length > 4 ? works.length : 7}+ Works){" "}
@@ -982,7 +1016,7 @@ export default function HomePage() {
          Testimonials Section
          ============================================ */}
       {testimonials.length > 0 && (
-        <section id="testimonials" className="section">
+        <section id="testimonials" className="section testimonials-section">
           <div className="container">
             <div className="section-header">
               <span className="section-badge">
@@ -1015,7 +1049,7 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  style={{ minHeight: "100px" }}
+                  style={{ minHeight: "70px" }}
                 >
                   <p className="testimonial-quote-text">
                     &ldquo;{testimonials[activeTestimonialIdx].quote}&rdquo;
@@ -1068,7 +1102,7 @@ export default function HomePage() {
                           activeTestimonialIdx === idx
                             ? "var(--text-primary)"
                             : "var(--border-color)",
-                        width: activeTestimonialIdx === idx ? "26px" : "8px",
+                        width: activeTestimonialIdx === idx ? "22px" : "6px",
                       }}
                       aria-label={`Go to slide ${idx + 1}`}
                     ></button>

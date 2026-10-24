@@ -5,7 +5,7 @@ export const seedServices: Omit<Service, "id">[] = [
     title: "Website Design",
     description:
       "Visually captivating, high-performance responsive websites tailored to elevate your brand and maximize audience engagement.",
-    iconName: "fa-code",
+    iconName: "fa-laptop-code",
     order: 1,
     mockupType: "custom_image",
     imageUrl:
@@ -23,7 +23,7 @@ export const seedServices: Omit<Service, "id">[] = [
     title: "Mobile & Web Apps",
     description:
       "Robust, scalable web applications and cross-platform mobile apps engineered with clean code and real-time capabilities.",
-    iconName: "fa-mobile-screen",
+    iconName: "fa-mobile-screen-button",
     order: 2,
     mockupType: "custom_image",
     imageUrl:
@@ -41,7 +41,7 @@ export const seedServices: Omit<Service, "id">[] = [
     title: "UI/UX & Branding",
     description:
       "Distinctive brand identities, wireframes, and design systems that create memorable impressions and intuitive user journeys.",
-    iconName: "fa-pen-nib",
+    iconName: "fa-palette",
     order: 3,
     mockupType: "custom_image",
     imageUrl:
