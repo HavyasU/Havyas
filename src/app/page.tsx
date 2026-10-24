@@ -41,13 +41,77 @@ const initialTestimonials: Testimonial[] = seedTestimonials.map((t, i) => ({ id:
 const initialEducation: Education[] = seedEducation.map((e, i) => ({ id: String(i + 1), ...e }));
 const initialCategories: string[] = Array.from(new Set(seedWorks.map((w) => w.category).filter(Boolean)));
 
+const defaultServiceImages = [
+  "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+];
+
+function getEnrichedService(service: Service, index: number): Service {
+  const seedMatch =
+    seedServices[index] ||
+    seedServices.find(
+      (s) => s.title.toLowerCase().trim() === service.title.toLowerCase().trim()
+    );
+  return {
+    ...service,
+    imageUrl:
+      service.imageUrl && service.imageUrl.trim() !== ""
+        ? service.imageUrl
+        : seedMatch?.imageUrl ||
+          defaultServiceImages[index % defaultServiceImages.length],
+    deliverables:
+      service.deliverables && service.deliverables.length > 0
+        ? service.deliverables
+        : seedMatch?.deliverables || [
+            "Full custom architecture & development",
+            "Mobile-first responsive optimization",
+            "Performance & Core Web Vitals compliance",
+            "Comprehensive testing & production deployment",
+          ],
+    technologies:
+      service.technologies && service.technologies.length > 0
+        ? service.technologies
+        : seedMatch?.technologies || [
+            "Next.js",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+          ],
+  };
+}
+
+function getInitialCached<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const item = localStorage.getItem(`cache_${key}`);
+    if (item) {
+      const parsed = JSON.parse(item);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed as T;
+    }
+  } catch {}
+  return fallback;
+}
+
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
-  const [services, setServices] = useState<Service[]>(initialServices);
-  const [works, setWorks] = useState<Work[]>(initialWorks);
-  const [experiences, setExperiences] = useState<Experience[]>(initialExperiences);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
-  const [educationList, setEducationList] = useState<Education[]>(initialEducation);
+  const [services, setServices] = useState<Service[]>(() =>
+    getInitialCached("services", initialServices)
+  );
+  const [works, setWorks] = useState<Work[]>(() =>
+    getInitialCached("works", initialWorks)
+  );
+  const [experiences, setExperiences] = useState<Experience[]>(() =>
+    getInitialCached("experiences", initialExperiences)
+  );
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() =>
+    getInitialCached("testimonials", initialTestimonials)
+  );
+  const [educationList, setEducationList] = useState<Education[]>(() =>
+    getInitialCached("education", initialEducation)
+  );
   const [resumeUrl, setResumeUrl] = useState<string>("/havyasU_Resume.pdf");
 
   // Projects filtering
@@ -74,11 +138,25 @@ export default function HomePage() {
     setMounted(true);
 
     const unsubServices = subscribeToServices((data) => {
-      if (data && data.length > 0) setServices(data);
+      if (data && data.length > 0) {
+        setServices((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(data)) return prev;
+          try {
+            localStorage.setItem("cache_services", JSON.stringify(data));
+          } catch {}
+          return data;
+        });
+      }
     });
     const unsubWorks = subscribeToWorks((data) => {
       if (data && data.length > 0) {
-        setWorks(data);
+        setWorks((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(data)) return prev;
+          try {
+            localStorage.setItem("cache_works", JSON.stringify(data));
+          } catch {}
+          return data;
+        });
         const cats = Array.from(
           new Set(data.map((w) => w.category).filter(Boolean)),
         );
@@ -86,13 +164,37 @@ export default function HomePage() {
       }
     });
     const unsubExp = subscribeToExperiences((data) => {
-      if (data && data.length > 0) setExperiences(data);
+      if (data && data.length > 0) {
+        setExperiences((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(data)) return prev;
+          try {
+            localStorage.setItem("cache_experiences", JSON.stringify(data));
+          } catch {}
+          return data;
+        });
+      }
     });
     const unsubTestimonials = subscribeToTestimonials((data) => {
-      if (data && data.length > 0) setTestimonials(data);
+      if (data && data.length > 0) {
+        setTestimonials((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(data)) return prev;
+          try {
+            localStorage.setItem("cache_testimonials", JSON.stringify(data));
+          } catch {}
+          return data;
+        });
+      }
     });
     const unsubEdu = subscribeToEducation((data) => {
-      if (data && data.length > 0) setEducationList(data);
+      if (data && data.length > 0) {
+        setEducationList((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(data)) return prev;
+          try {
+            localStorage.setItem("cache_education", JSON.stringify(data));
+          } catch {}
+          return data;
+        });
+      }
     });
     const unsubResume = subscribeToResumeUrl(setResumeUrl);
 
@@ -157,7 +259,7 @@ export default function HomePage() {
         });
       });
     },
-    { dependencies: [mounted, works, experiences] }
+    { dependencies: [mounted] }
   );
 
   // Section ScrollTrigger Reveal Animations
@@ -191,20 +293,19 @@ export default function HomePage() {
       });
 
       // Animate Service Cards
-      const serviceCards = gsap.utils.toArray(".service-card");
-      if (serviceCards.length > 0 && document.querySelector(".services-grid")) {
+      const serviceCards = gsap.utils.toArray(".service-deck-card, .service-card");
+      if (serviceCards.length > 0 && document.querySelector(".services-deck, .services-grid")) {
         gsap.fromTo(
           serviceCards,
-          { opacity: 0, y: 35, scale: 0.96 },
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
             y: 0,
-            scale: 1,
             duration: 0.7,
             stagger: 0.12,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: ".services-grid",
+              trigger: document.querySelector(".services-deck") || ".services-grid",
               start: "top 82%",
               toggleActions: "play none none none",
             },
@@ -233,7 +334,7 @@ export default function HomePage() {
         );
       }
     },
-    { dependencies: [mounted, services, works] }
+    { dependencies: [mounted] }
   );
 
   const onSubmit = async (data: {
@@ -304,22 +405,37 @@ export default function HomePage() {
         <div className="container">
           <div className="stats-grid">
             <div className="stat-item">
-              <h2 className="stat-number" data-target="3">
-                0+
-              </h2>
-              <p>Years Experience</p>
+              <div className="stat-icon-box">
+                <i className="fa-solid fa-code-commit"></i>
+              </div>
+              <div>
+                <h2 className="stat-number" data-target="3">
+                  0+
+                </h2>
+                <p>Years Experience</p>
+              </div>
             </div>
             <div className="stat-item">
-              <h2 className="stat-number" data-target="15">
-                0+
-              </h2>
-              <p>Projects Delivered</p>
+              <div className="stat-icon-box">
+                <i className="fa-solid fa-layer-group"></i>
+              </div>
+              <div>
+                <h2 className="stat-number" data-target="15">
+                  0+
+                </h2>
+                <p>Projects Delivered</p>
+              </div>
             </div>
             <div className="stat-item">
-              <h2 className="stat-number" data-target="10">
-                0+
-              </h2>
-              <p>Happy Clients</p>
+              <div className="stat-icon-box">
+                <i className="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <h2 className="stat-number" data-target="10">
+                  0+
+                </h2>
+                <p>Happy Clients</p>
+              </div>
             </div>
           </div>
         </div>
@@ -407,113 +523,44 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-         Education & Experience Sections
-         ============================================ */}
-      {/* ============================================
          Education Section
          ============================================ */}
       <section id="education" className="section education-section section-alt">
         <div className="container">
-          <h2 className="section-title">Education</h2>
-          <p className="section-subtitle">
-            Academic foundations and credentials
-          </p>
-          <div
-            className="education-grid-new"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "2rem",
-              maxWidth: "900px",
-              margin: "0 auto",
-            }}
-          >
+          <div className="section-header">
+            <span className="section-badge">
+              <i className="fa-solid fa-graduation-cap"></i> Academics
+            </span>
+            <h2 className="section-title">Education & Credentials</h2>
+            <p className="section-subtitle">
+              Academic foundations, technical degrees, and ongoing computer science research
+            </p>
+          </div>
+
+          <div className="education-grid">
             {educationList.length === 0 ? (
               <p className="text-text-secondary italic text-center col-span-full">
                 No education credentials added yet.
               </p>
             ) : (
               educationList.map((edu) => (
-                <div
-                  key={edu.id}
-                  className="education-card"
-                  style={{
-                    background: "var(--bg-card)",
-                    padding: "2.5rem 2rem",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "8px",
-                    transition: "var(--transition)",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <div>
-                      <span
-                        className="edu-year"
-                        style={{
-                          fontSize: "0.85rem",
-                          color: "var(--nav-text-active)",
-                          fontWeight: 600,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em",
-                        }}
-                      >
-                        {edu.year}
-                      </span>
-                      <h3
-                        style={{
-                          fontSize: "1.25rem",
-                          fontWeight: 700,
-                          marginTop: "0.5rem",
-                          color: "var(--text-primary)",
-                        }}
-                      >
-                        {edu.degree}
-                      </h3>
-                      <h4
-                        style={{
-                          fontSize: "1rem",
-                          color: "var(--text-secondary)",
-                          fontWeight: 500,
-                          marginTop: "0.25rem",
-                        }}
-                      >
-                        {edu.institution}
-                      </h4>
+                <div key={edu.id} className="education-card">
+                  <div>
+                    <div className="education-card-header">
+                      <div>
+                        <span className="edu-year-badge">{edu.year}</span>
+                        <h3>{edu.degree}</h3>
+                        <h4>
+                          <i className="fa-solid fa-building-columns text-xs opacity-70"></i>
+                          {edu.institution}
+                        </h4>
+                      </div>
+                      <div className="edu-icon-box">
+                        <i className="fa-solid fa-graduation-cap"></i>
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        background: "rgba(255, 255, 255, 0.08)",
-                        color: "#ffffff",
-                        padding: "0.75rem",
-                        borderRadius: "8px",
-                        border: "1px solid rgba(255, 255, 255, 0.15)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <i
-                        className="fa-solid fa-graduation-cap"
-                        style={{ fontSize: "1.25rem" }}
-                      ></i>
-                    </div>
+                    <p>{edu.description}</p>
                   </div>
-                  <p
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {edu.description}
-                  </p>
                 </div>
               ))
             )}
@@ -522,14 +569,19 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-         Work Experience Section (Timeline)
+         Work Experience Section
          ============================================ */}
       <section id="experience" className="section experience-section">
         <div className="container">
-          <h2 className="section-title">Work Experience</h2>
-          <p className="section-subtitle">
-            My professional journey and industry contributions
-          </p>
+          <div className="section-header">
+            <span className="section-badge">
+              <i className="fa-solid fa-briefcase"></i> Career Journey
+            </span>
+            <h2 className="section-title">Work Experience</h2>
+            <p className="section-subtitle">
+              Professional engineering roles, software development impact, and industry contributions
+            </p>
+          </div>
 
           <div className="timeline-container">
             <div className="timeline-line"></div>
@@ -569,6 +621,7 @@ export default function HomePage() {
                         <div className="timeline-title-group">
                           <h3>{exp.role}</h3>
                           <span className="timeline-company">
+                            <i className="fa-solid fa-building text-xs opacity-70 mr-1.5"></i>
                             {exp.company}
                           </span>
                         </div>
@@ -593,32 +646,32 @@ export default function HomePage() {
          ============================================ */}
       <section id="skills" className="section skills-section section-alt">
         <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="section-header">
+            <span className="section-badge">
+              <i className="fa-solid fa-code"></i> Tech Stack
+            </span>
             <h2 className="section-title">Technical Expertise</h2>
             <p className="section-subtitle">
-              Technologies, frameworks, and modern tools I leverage to engineer
-              high-performance web & mobile software applications.
+              Core technologies, frameworks, and modern tools leveraged to architect high-performance web & mobile systems
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="skills-grid">
             {/* 1. Frontend & Mobile */}
-            <div className="p-8 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary/40 transition-all duration-300 shadow-xl flex flex-col justify-between group">
+            <div className="skill-category">
               <div>
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border-color">
-                  <div className="w-10 h-10 rounded-xl bg-text-primary/5 border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
+                <div className="skill-category-header">
+                  <div className="skill-icon-box">
                     <i className="fa-solid fa-code"></i>
                   </div>
                   <div>
-                    <h3 className="text-lg font-extrabold text-text-primary tracking-tight">
-                      Frontend & Mobile
-                    </h3>
-                    <span className="text-xs text-text-secondary font-medium">
-                      UI/UX & Native Systems
+                    <h3>Frontend & Mobile</h3>
+                    <span className="skill-category-subtitle">
+                      Responsive UI/UX & Native Systems
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="skill-tags">
                   {[
                     "React Native",
                     "Next.js",
@@ -630,10 +683,7 @@ export default function HomePage() {
                     "Sass",
                     "Redux Toolkit",
                   ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1.5 text-xs font-semibold text-text-primary bg-bg-section-alt border border-border-color rounded-lg hover:border-text-primary hover:bg-text-primary/10 hover:scale-105 transition-all duration-200"
-                    >
+                    <span key={skill} className="skill-tag">
                       {skill}
                     </span>
                   ))}
@@ -642,22 +692,20 @@ export default function HomePage() {
             </div>
 
             {/* 2. Backend & Architecture */}
-            <div className="p-8 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary/40 transition-all duration-300 shadow-xl flex flex-col justify-between group">
+            <div className="skill-category">
               <div>
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border-color">
-                  <div className="w-10 h-10 rounded-xl bg-text-primary/5 border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
+                <div className="skill-category-header">
+                  <div className="skill-icon-box">
                     <i className="fa-solid fa-server"></i>
                   </div>
                   <div>
-                    <h3 className="text-lg font-extrabold text-text-primary tracking-tight">
-                      Backend & Core Logic
-                    </h3>
-                    <span className="text-xs text-text-secondary font-medium">
-                      APIs & Microservices
+                    <h3>Backend & Core Logic</h3>
+                    <span className="skill-category-subtitle">
+                      Scalable APIs & Microservices
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="skill-tags">
                   {[
                     "Node.js",
                     "Express.js",
@@ -668,10 +716,7 @@ export default function HomePage() {
                     "JWT Auth",
                     "Middleware Engine",
                   ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1.5 text-xs font-semibold text-text-primary bg-bg-section-alt border border-border-color rounded-lg hover:border-text-primary hover:bg-text-primary/10 hover:scale-105 transition-all duration-200"
-                    >
+                    <span key={skill} className="skill-tag">
                       {skill}
                     </span>
                   ))}
@@ -680,22 +725,20 @@ export default function HomePage() {
             </div>
 
             {/* 3. Database & Dev Tools */}
-            <div className="p-8 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary/40 transition-all duration-300 shadow-xl flex flex-col justify-between group">
+            <div className="skill-category">
               <div>
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border-color">
-                  <div className="w-10 h-10 rounded-xl bg-text-primary/5 border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
+                <div className="skill-category-header">
+                  <div className="skill-icon-box">
                     <i className="fa-solid fa-database"></i>
                   </div>
                   <div>
-                    <h3 className="text-lg font-extrabold text-text-primary tracking-tight">
-                      Database & Cloud Tools
-                    </h3>
-                    <span className="text-xs text-text-secondary font-medium">
-                      Data Storage & Deployment
+                    <h3>Database & Cloud</h3>
+                    <span className="skill-category-subtitle">
+                      Persistent Storage, DevOps & CI/CD
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="skill-tags">
                   {[
                     "MongoDB",
                     "Firebase / Firestore",
@@ -706,10 +749,7 @@ export default function HomePage() {
                     "Cloudinary",
                     "Postman",
                   ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1.5 text-xs font-semibold text-text-primary bg-bg-section-alt border border-border-color rounded-lg hover:border-white hover:bg-white/10 hover:scale-105 transition-all duration-200"
-                    >
+                    <span key={skill} className="skill-tag">
                       {skill}
                     </span>
                   ))}
@@ -721,156 +761,81 @@ export default function HomePage() {
       </section>
 
       {/* ============================================
-         Services Section
+         Services Section (3-Card Grid)
          ============================================ */}
       <section id="services" className="section services-section">
         <div className="container">
-          <h2 className="section-title">What I Do</h2>
-          <p className="section-subtitle">
-            Comprehensive solutions for your digital needs
-          </p>
-          <div className="services-grid">
+          <div className="section-header">
+            <span className="section-badge">
+              <i className="fa-solid fa-compass-drafting"></i> Solutions
+            </span>
+            <h2 className="section-title">What I Can Do</h2>
+            <p className="section-subtitle">
+              Comprehensive end-to-end solutions engineered to transform concepts into high-impact digital experiences
+            </p>
+          </div>
+
+          <div className="services-deck">
             {services.length === 0 ? (
-              <p className="text-text-secondary italic text-center col-span-full">
+              <p className="text-text-secondary italic text-center col-span-full py-8">
                 No services configured yet.
               </p>
             ) : (
-              services.map((service, index) => {
-                const cardIndex = index % 4; // Cycle fallback
-                const hasCustomImage =
-                  service.imageUrl && service.imageUrl.trim() !== "";
-                const effectiveType = hasCustomImage
-                  ? "custom_image"
-                  : service.mockupType ||
-                    (cardIndex === 0
-                      ? "search"
-                      : cardIndex === 1
-                        ? "store"
-                        : cardIndex === 2
-                          ? "invoice"
-                          : "calendar");
-
+              services.slice(0, 3).map((rawService, index) => {
+                const service = getEnrichedService(rawService, index);
                 return (
-                  <div
-                    key={service.id}
-                    className={`service-card card-style-${cardIndex}`}
+                  <a
+                    key={service.id || `srv-${index}`}
+                    href="#contact"
+                    className="service-deck-card"
+                    onClick={() => {
+                      setTimeout(() => {
+                        const msgInput = document.querySelector(
+                          'textarea[name="message"]'
+                        ) as HTMLTextAreaElement | null;
+                        if (msgInput) {
+                          msgInput.value = `Hi Havyas, I would like to inquire about your ${service.title} service.`;
+                          msgInput.focus();
+                        }
+                      }, 200);
+                    }}
+                    aria-label={`Inquire about ${service.title}`}
                   >
-                    <div className="service-card-top">
-                      <h3>{service.title}</h3>
-                      <p>{service.description}</p>
+                    {/* Top Row: Icon + Number + Action Arrow */}
+                    <div className="service-deck-header">
+                      <div className="service-deck-icon-box">
+                        <i className={`fa-solid ${service.iconName || "fa-code"}`}></i>
+                      </div>
+                      <div className="service-deck-actions">
+                        <span className="service-deck-num">0{index + 1}</span>
+                        <div className="service-deck-arrow-btn" aria-hidden="true">
+                          <i className="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Service Visual Mockup Area */}
-                    <div className="service-mockup">
-                      {effectiveType === "custom_image" && service.imageUrl ? (
-                        <div className="w-full h-full flex items-center justify-center p-2">
-                          <img
-                            src={service.imageUrl}
-                            alt={service.title}
-                            className="max-h-full max-w-full object-contain rounded-xl shadow-lg"
-                          />
-                        </div>
-                      ) : effectiveType === "search" ? (
-                        /* 1. Website Design Graphic (Search & Code Browser Mockup) */
-                        <div className="mockup-search-container">
-                          <div className="mockup-search-bar">
-                            <i className="fa-solid fa-globe"></i>
-                            <span>havyas.in</span>
-                            <div className="mockup-cursor">|</div>
-                          </div>
-                          <div className="mockup-tags">
-                            <span className="active">.dev</span>
-                            <span>.com</span>
-                            <span>.tech</span>
-                            <span>.in</span>
-                          </div>
-                        </div>
-                      ) : effectiveType === "store" ? (
-                        /* 2. Graphic Design Graphic (Branding & Design Canvas Mockup) */
-                        <div className="mockup-graphic-design">
-                          <div className="design-canvas">
-                            <div className="color-palette">
-                              <span
-                                className="color-swatch sw-1"
-                                title="#00A2C5"
-                              ></span>
-                              <span
-                                className="color-swatch sw-2"
-                                title="#EAB308"
-                              ></span>
-                              <span
-                                className="color-swatch sw-3"
-                                title="#EC4899"
-                              ></span>
-                              <span
-                                className="color-swatch sw-4"
-                                title="#10B981"
-                              ></span>
-                            </div>
-                            <div className="font-specimen">
-                              <span className="font-title">Aa</span>
-                              <span className="font-subtitle">
-                                Branding & Typography
-                              </span>
-                            </div>
-                          </div>
-                          <div className="badge badge-design">
-                            <i className="fa-solid fa-palette"></i> Branding
-                          </div>
-                          <div className="badge badge-vector">
-                            <i className="fa-solid fa-bezier-curve"></i> Vector
-                          </div>
-                        </div>
-                      ) : effectiveType === "invoice" ? (
-                        /* 3. Applications Graphic (Mobile & Web App Interface Mockup) */
-                        <div className="mockup-phone-app">
-                          <div className="phone-screen">
-                            <div className="phone-header-app">
-                              <span className="app-name">Mobile App</span>
-                              <span className="status-dot"></span>
-                            </div>
-                            <div className="app-body-stub">
-                              <div className="app-card-stub">
-                                <i className="fa-solid fa-bolt"></i>
-                                <span>Realtime API</span>
-                              </div>
-                            </div>
-                            <div className="app-nav-bar">
-                              <i className="fa-solid fa-house active"></i>
-                              <i className="fa-solid fa-chart-pie"></i>
-                              <i className="fa-solid fa-user"></i>
-                            </div>
-                          </div>
-                          <div className="badge badge-notification">
-                            <i className="fa-solid fa-bell"></i> Push Active
-                          </div>
-                        </div>
-                      ) : (
-                        /* 4. Project Design Graphic (Presentation & Pitch Deck Mockup) */
-                        <div className="mockup-project-deck">
-                          <div className="presentation-card">
-                            <div className="deck-header">
-                              <span className="deck-title">Project Deck</span>
-                              <i className="fa-solid fa-diagram-project"></i>
-                            </div>
-                            <div className="deck-preview">
-                              <div className="deck-bar b1"></div>
-                              <div className="deck-bar b2"></div>
-                            </div>
-                            <div className="deck-slide-dots">
-                              <span className="s-dot active"></span>
-                              <span className="s-dot"></span>
-                              <span className="s-dot"></span>
-                            </div>
-                          </div>
-                          <div className="booking-toast">
-                            <i className="fa-solid fa-circle-check"></i>
-                            <span>Design Approved</span>
-                          </div>
-                        </div>
-                      )}
+                    {/* Visual Media Frame */}
+                    <div className="service-deck-frame">
+                      <img
+                        src={service.imageUrl}
+                        alt={service.title}
+                        className="service-deck-img"
+                        loading="lazy"
+                      />
                     </div>
-                  </div>
+
+                    {/* Content Area */}
+                    <div className="service-deck-content">
+                      <span className="service-deck-subtag">Service &middot; 0{index + 1}</span>
+                      <h3 className="service-deck-heading">{service.title}</h3>
+                      <p className="service-deck-paragraph">{service.description}</p>
+
+                      <div className="service-deck-link">
+                        <span>Get Started</span>
+                        <i className="fa-solid fa-arrow-right"></i>
+                      </div>
+                    </div>
+                  </a>
                 );
               })
             )}
@@ -881,18 +846,19 @@ export default function HomePage() {
       {/* ============================================
          Projects Section
          ============================================ */}
-      {/* ============================================
-         Projects Section
-         ============================================ */}
       <section id="projects" className="section projects-section section-alt">
         <div className="container">
-          <h2 className="section-title">Featured Projects</h2>
-          <p className="section-subtitle" style={{ marginBottom: "2rem" }}>
-            Curated selection of high-impact digital experiences, web
-            applications, and brand platforms
-          </p>
+          <div className="section-header">
+            <span className="section-badge">
+              <i className="fa-solid fa-rocket"></i> Portfolio
+            </span>
+            <h2 className="section-title">Featured Projects</h2>
+            <p className="section-subtitle">
+              Curated selection of high-impact digital experiences, web applications, and brand platforms
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {works.length === 0 ? (
               <p className="text-text-secondary italic text-center col-span-full py-8">
                 No projects loaded yet.
@@ -902,57 +868,17 @@ export default function HomePage() {
                 return (
                   <div
                     key={work.id}
-                    className="project-card-new group"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
+                    className="project-card-new group flex flex-col justify-between"
                   >
-                    {/* Canvas Backdrop Frame (Matching Charcoal Canvas for All Projects) */}
-                    <div
-                      className="project-canvas-frame"
-                      style={{
-                        position: "relative",
-                        width: "100%",
-                        aspectRatio: "21 / 9",
-                        borderRadius: "16px",
-                        background: "#0f172a",
-                        padding: "1.5rem 1.5rem 0 1.5rem",
-                        overflow: "hidden",
-                        marginBottom: "1.2rem",
-                        display: "flex",
-                        alignItems: "flex-end",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {/* Inner Mockup Image with Rounded Top & Light Reflect Shadow */}
-                      <div
-                        className="project-inner-mockup"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          position: "relative",
-                          borderRadius: "5px 5px 0 0",
-                          overflow: "hidden",
-                          border: "2px solid #ffffff",
-                          borderBottom: 0,
-                          boxShadow:
-                            "0 20px 40px -10px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.15)",
-                          transition:
-                            "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                        }}
-                      >
+                    {/* Canvas Frame */}
+                    <div className="project-canvas-frame">
+                      {/* Inner Mockup Image */}
+                      <div className="project-inner-mockup">
                         <img
                           src={work.coverImageUrl || "/images/connectimage.png"}
                           alt={work.title}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "fill",
-                            objectPosition: "top",
-                            display: "block",
-                          }}
+                          className="w-full h-full object-cover object-top block"
+                          loading="lazy"
                         />
                       </div>
 
@@ -962,11 +888,12 @@ export default function HomePage() {
                         style={{
                           position: "absolute",
                           inset: 0,
-                          background: "rgba(0, 0, 0, 0.65)",
+                          background: "rgba(0, 0, 0, 0.7)",
+                          backdropFilter: "blur(4px)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          gap: "1rem",
+                          gap: "0.75rem",
                           opacity: 0,
                           transition: "opacity 0.3s ease",
                           zIndex: 10,
@@ -977,18 +904,7 @@ export default function HomePage() {
                           href={work.liveUrl || "https://havyas.in"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{
-                            padding: "0.6rem 1.2rem",
-                            borderRadius: "30px",
-                            background: "#ffffff",
-                            color: "#000000",
-                            fontWeight: 700,
-                            fontSize: "0.8rem",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "6px",
-                            boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-                          }}
+                          className="showcase-link-btn primary"
                         >
                           <i className="fa-solid fa-up-right-from-square"></i>{" "}
                           Live Demo
@@ -997,19 +913,7 @@ export default function HomePage() {
                           href={work.githubUrl || "https://github.com/HavyasU"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{
-                            padding: "0.6rem 1.2rem",
-                            borderRadius: "30px",
-                            background: "var(--bg-card)",
-                            color: "var(--text-primary)",
-                            border: "1px solid var(--border-color)",
-                            fontWeight: 700,
-                            fontSize: "0.8rem",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "6px",
-                            boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-                          }}
+                          className="showcase-link-btn"
                         >
                           <i className="fa-brands fa-github"></i> GitHub
                         </a>
@@ -1017,77 +921,29 @@ export default function HomePage() {
                     </div>
 
                     {/* Card Metadata */}
-                    <div
-                      style={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    <div className="flex-grow flex flex-col justify-between">
                       <div>
                         {/* Title & Arrow Link */}
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "flex-start",
-                            marginBottom: "0.3rem",
-                          }}
-                        >
-                          <h3
-                            style={{
-                              fontSize: "1.3rem",
-                              fontWeight: 700,
-                              color: "var(--text-primary)",
-                            }}
-                          >
+                        <div className="flex justify-between items-start mb-1.5">
+                          <h3 className="text-xl font-bold text-text-primary tracking-tight">
                             {work.title}
                           </h3>
-                          <span
-                            style={{
-                              fontSize: "1.2rem",
-                              color: "var(--text-secondary)",
-                              fontWeight: 300,
-                            }}
-                          >
+                          <span className="text-lg text-text-secondary font-light">
                             ↗
                           </span>
                         </div>
 
                         {/* Subtitle / Client */}
-                        <p
-                          style={{
-                            fontSize: "0.85rem",
-                            color: "var(--text-secondary)",
-                            marginBottom: "0.8rem",
-                            fontWeight: 500,
-                          }}
-                        >
+                        <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
                           {work.client || work.category}
                         </p>
 
                         {/* Tags Pill List */}
-                        <div
-                          style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: "0.5rem",
-                            marginBottom: "1.2rem",
-                          }}
-                        >
+                        <div className="flex flex-wrap gap-2 mb-5">
                           {work.tags?.map((tag) => (
                             <span
                               key={tag}
-                              style={{
-                                fontSize: "0.75rem",
-                                padding: "0.25rem 0.65rem",
-                                borderRadius: "4px",
-                                background: "rgba(255, 255, 255, 0.05)",
-                                border: "1px solid var(--border-color)",
-                                color: "var(--text-secondary)",
-                                fontWeight: 500,
-                              }}
+                              className="text-xs px-2.5 py-1 rounded-md bg-bg-section-alt border border-border-color text-text-secondary font-medium"
                             >
                               {tag}
                             </span>
@@ -1098,18 +954,7 @@ export default function HomePage() {
                       {/* Case Study Page Link Button */}
                       <Link
                         href={`/projects/${work.id}`}
-                        className="btn btn-primary"
-                        style={{
-                          display: "block",
-                          width: "100%",
-                          textAlign: "center",
-                          padding: "0.8rem",
-                          fontSize: "0.8rem",
-                          fontWeight: 700,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em",
-                          borderRadius: "8px",
-                        }}
+                        className="btn btn-primary w-full text-center py-3 rounded-xl text-xs font-bold uppercase tracking-wider block"
                       >
                         View Case Study &rarr;
                       </Link>
@@ -1120,22 +965,10 @@ export default function HomePage() {
             )}
           </div>
 
-          <div style={{ textAlign: "center", marginTop: "4rem" }}>
+          <div className="text-center mt-14">
             <Link
               href="/projects"
-              className="btn btn-secondary"
-              style={{
-                padding: "1rem 2rem",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
-                borderRadius: "30px",
-                boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
+              className="btn btn-secondary px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2.5 shadow-sm"
             >
               Explore All Projects & Case Studies (
               {works.length > 4 ? works.length : 7}+ Works){" "}
@@ -1151,14 +984,30 @@ export default function HomePage() {
       {testimonials.length > 0 && (
         <section id="testimonials" className="section">
           <div className="container">
-            <h2 className="section-title">Testimonials</h2>
-            <div
-              style={{
-                maxWidth: "800px",
-                margin: "0 auto",
-                textAlign: "center",
-              }}
-            >
+            <div className="section-header">
+              <span className="section-badge">
+                <i className="fa-solid fa-comment-dots"></i> Endorsements
+              </span>
+              <h2 className="section-title">Client Feedback</h2>
+              <p className="section-subtitle">
+                Testimonials from collaborators, engineering teams, and project stakeholders
+              </p>
+            </div>
+
+            <div className="testimonial-spotlight-card">
+              <div className="testimonial-top-row">
+                <div className="testimonial-quote-icon-box">
+                  <i className="fa-solid fa-quote-left"></i>
+                </div>
+                <div className="testimonial-stars">
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
+                </div>
+              </div>
+
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTestimonialIdx}
@@ -1166,7 +1015,7 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  style={{ minHeight: "120px" }}
+                  style={{ minHeight: "100px" }}
                 >
                   <p className="testimonial-quote-text">
                     &ldquo;{testimonials[activeTestimonialIdx].quote}&rdquo;
@@ -1174,79 +1023,70 @@ export default function HomePage() {
                 </motion.div>
               </AnimatePresence>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "1rem",
-                  marginTop: "1rem",
-                }}
-              >
+              <div className="testimonial-author-wrapper">
                 <img
                   src={
                     testimonials[activeTestimonialIdx].avatarUrl ||
                     "https://api.dicebear.com/7.x/avataaars/svg?seed=Demo"
                   }
                   alt={testimonials[activeTestimonialIdx].clientName}
-                  style={{
-                    width: "50px",
-                    height: "50px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: "1px solid var(--border-color)",
-                  }}
+                  className="testimonial-avatar"
                 />
-                <div style={{ textAlign: "left" }}>
-                  <h4
-                    style={{
-                      fontWeight: "bold",
-                      color: "var(--text-primary)",
-                      fontSize: "1.1rem",
-                    }}
-                  >
+                <div className="testimonial-author-info">
+                  <h4 className="testimonial-author-name">
                     {testimonials[activeTestimonialIdx].clientName}
                   </h4>
-                  <p
-                    style={{
-                      fontSize: "0.85rem",
-                      color: "var(--text-secondary)",
-                      marginTop: "0.1rem",
-                    }}
-                  >
+                  <p className="testimonial-author-role">
                     {testimonials[activeTestimonialIdx].company}
                   </p>
                 </div>
               </div>
 
-              {/* Slider Dots */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "0.6rem",
-                  justifyContent: "center",
-                  marginTop: "2.5rem",
-                }}
-              >
-                {testimonials.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveTestimonialIdx(idx)}
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      background:
-                        activeTestimonialIdx === idx
-                          ? "var(--text-primary)"
-                          : "var(--border-color)",
-                      border: "none",
-                      cursor: "pointer",
-                      transition: "background 0.3s ease",
-                    }}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  ></button>
-                ))}
+              {/* Slider Controls */}
+              <div className="testimonial-nav-controls">
+                <button
+                  type="button"
+                  className="testimonial-nav-btn"
+                  onClick={() =>
+                    setActiveTestimonialIdx((prev) =>
+                      prev === 0 ? testimonials.length - 1 : prev - 1
+                    )
+                  }
+                  aria-label="Previous testimonial"
+                >
+                  <i className="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+
+                <div className="flex items-center gap-1.5">
+                  {testimonials.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveTestimonialIdx(idx)}
+                      className="testimonial-dot-pill"
+                      style={{
+                        background:
+                          activeTestimonialIdx === idx
+                            ? "var(--text-primary)"
+                            : "var(--border-color)",
+                        width: activeTestimonialIdx === idx ? "26px" : "8px",
+                      }}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    ></button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="testimonial-nav-btn"
+                  onClick={() =>
+                    setActiveTestimonialIdx((prev) =>
+                      prev === testimonials.length - 1 ? 0 : prev + 1
+                    )
+                  }
+                  aria-label="Next testimonial"
+                >
+                  <i className="fa-solid fa-chevron-right text-xs"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -1258,49 +1098,48 @@ export default function HomePage() {
          ============================================ */}
       <section id="contact" className="section contact-section section-alt">
         <div className="container">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-              {/* Left Column: Contact Details & Status */}
-              <div className="lg:col-span-5 space-y-6">
-                <div>
-                  <span className="text-xs uppercase tracking-widest font-extrabold text-text-secondary block mb-2">
-                    Let's Connect
-                  </span>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight">
-                    Get In Touch
-                  </h2>
-                  <p className="text-text-secondary text-sm leading-relaxed mt-3">
-                    Have a project in mind, need technical consulting, or want
-                    to discuss full-stack & mobile development opportunities?
-                    Feel free to reach out.
-                  </p>
-                </div>
+          <div className="section-header">
+            <span className="section-badge">
+              <i className="fa-solid fa-paper-plane"></i> Get In Touch
+            </span>
+            <h2 className="section-title">Let&apos;s Build Something Great</h2>
+            <p className="section-subtitle">
+              Have a project in mind, need technical consulting, or exploring software collaborations? Reach out today.
+            </p>
+          </div>
 
-                {/* Status Badge */}
-                <div className="p-4 rounded-xl bg-bg-card border border-border-color flex items-center gap-3">
-                  <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+              {/* Left Column: Direct Contact & Availability */}
+              <div className="lg:col-span-5 space-y-6">
+                {/* Availability Badge Card */}
+                <div className="p-6 rounded-2xl bg-bg-card border border-border-color shadow-sm flex items-center gap-4">
+                  <span className="relative flex h-3.5 w-3.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                  </span>
                   <div>
-                    <span className="text-xs font-bold text-text-primary block">
+                    <span className="text-sm font-bold text-text-primary block">
                       Available for New Projects
                     </span>
-                    <span className="text-[11px] text-text-secondary">
-                      Freelance & Contract Work
+                    <span className="text-xs text-text-secondary">
+                      Full-Stack Web, Native Mobile & Architecture Consulting
                     </span>
                   </div>
                 </div>
 
                 {/* Direct Contact Cards */}
-                <div className="space-y-4 pt-2">
+                <div className="space-y-4">
                   <a
                     href="mailto:havyasu2005@gmail.com"
-                    className="p-5 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary/40 transition-all flex items-center justify-between group"
+                    className="p-5 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary transition-all flex items-center justify-between group shadow-sm hover:-translate-y-1"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-text-primary/5 border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
+                      <div className="w-12 h-12 rounded-xl bg-bg-section-alt border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
                         <i className="fa-solid fa-envelope"></i>
                       </div>
                       <div>
-                        <span className="text-xs text-text-secondary block font-medium">
+                        <span className="text-xs text-text-secondary block font-semibold uppercase tracking-wider">
                           Email Me
                         </span>
                         <span className="text-sm font-bold text-text-primary">
@@ -1308,7 +1147,7 @@ export default function HomePage() {
                         </span>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-text-secondary group-hover:text-text-primary group-hover:translate-x-1 transition-all">
+                    <span className="text-sm font-bold text-text-secondary group-hover:text-text-primary group-hover:translate-x-1 transition-all">
                       &rarr;
                     </span>
                   </a>
@@ -1317,14 +1156,14 @@ export default function HomePage() {
                     href="https://api.whatsapp.com/send?phone=7483989780&text=Hey%2C%20I%20would%20like%20to%20connect%20with%20you%21"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-5 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary/40 transition-all flex items-center justify-between group"
+                    className="p-5 rounded-2xl bg-bg-card border border-border-color hover:border-text-primary transition-all flex items-center justify-between group shadow-sm hover:-translate-y-1"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-text-primary/5 border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
+                      <div className="w-12 h-12 rounded-xl bg-bg-section-alt border border-border-color flex items-center justify-center text-text-primary text-lg group-hover:bg-text-primary group-hover:text-bg-body transition-all">
                         <i className="fa-brands fa-whatsapp"></i>
                       </div>
                       <div>
-                        <span className="text-xs text-text-secondary block font-medium">
+                        <span className="text-xs text-text-secondary block font-semibold uppercase tracking-wider">
                           WhatsApp Direct
                         </span>
                         <span className="text-sm font-bold text-text-primary">
@@ -1332,28 +1171,28 @@ export default function HomePage() {
                         </span>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-text-secondary group-hover:text-text-primary group-hover:translate-x-1 transition-all">
+                    <span className="text-sm font-bold text-text-secondary group-hover:text-text-primary group-hover:translate-x-1 transition-all">
                       &rarr;
                     </span>
                   </a>
                 </div>
               </div>
 
-              {/* Right Column: Standalone Form Card */}
+              {/* Right Column: Inquiry Form Card */}
               <div className="lg:col-span-7">
-                <div className="p-8 sm:p-10 rounded-2xl bg-bg-card border border-border-color shadow-2xl">
+                <div className="p-8 sm:p-10 rounded-2xl bg-bg-card border border-border-color shadow-sm">
                   <div className="mb-6 pb-4 border-b border-border-color">
-                    <h3 className="text-xl font-bold text-text-primary">
+                    <h3 className="text-xl font-bold text-text-primary tracking-tight">
                       Send a Message
                     </h3>
                     <p className="text-xs text-text-secondary mt-1">
-                      Fill out the form below and I'll respond within 24 hours.
+                      Fill out the form below and I&apos;ll respond within 24 hours.
                     </p>
                   </div>
 
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                     <div>
-                      <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1.5">
+                      <label className="text-xs font-bold text-text-secondary uppercase tracking-wider block mb-2">
                         Your Name
                       </label>
                       <input
@@ -1361,12 +1200,12 @@ export default function HomePage() {
                         placeholder="John Doe"
                         required
                         {...register("name")}
-                        className="w-full px-4 py-3 rounded-xl bg-bg-body border border-border-color text-text-primary placeholder:text-text-secondary/70 text-sm focus:outline-none focus:border-text-primary transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-bg-section-alt border border-border-color text-text-primary placeholder:text-text-secondary/60 text-sm focus:outline-none focus:border-text-primary transition-all"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1.5">
+                      <label className="text-xs font-bold text-text-secondary uppercase tracking-wider block mb-2">
                         Your Email
                       </label>
                       <input
@@ -1374,34 +1213,34 @@ export default function HomePage() {
                         placeholder="john@example.com"
                         required
                         {...register("email")}
-                        className="w-full px-4 py-3 rounded-xl bg-bg-body border border-border-color text-text-primary placeholder:text-text-secondary/70 text-sm focus:outline-none focus:border-text-primary transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-bg-section-alt border border-border-color text-text-primary placeholder:text-text-secondary/60 text-sm focus:outline-none focus:border-text-primary transition-all"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-1.5">
+                      <label className="text-xs font-bold text-text-secondary uppercase tracking-wider block mb-2">
                         Message
                       </label>
                       <textarea
-                        placeholder="Tell me about your project or inquiry..."
+                        placeholder="Tell me about your project, timeline, or inquiry..."
                         required
                         rows={4}
                         {...register("message")}
-                        className="w-full px-4 py-3 rounded-xl bg-bg-body border border-border-color text-text-primary placeholder:text-text-secondary/70 text-sm focus:outline-none focus:border-text-primary transition-all resize-none"
+                        className="w-full px-4 py-3 rounded-xl bg-bg-section-alt border border-border-color text-text-primary placeholder:text-text-secondary/60 text-sm focus:outline-none focus:border-text-primary transition-all resize-none"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3.5 px-6 rounded-xl bg-text-primary text-bg-body font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-all shadow-lg cursor-pointer disabled:opacity-50"
+                      className="btn btn-primary w-full py-3.5 px-6 rounded-xl font-bold text-xs uppercase tracking-wider block shadow-sm cursor-pointer disabled:opacity-50"
                     >
                       {isSubmitting ? "Sending Message..." : "Send Message"}
                     </button>
 
                     {isSubmitSuccessful && (
-                      <p className="text-xs text-emerald-400 font-semibold text-center pt-2">
-                        ✓ Message sent successfully! I'll get back to you soon.
+                      <p className="text-xs text-emerald-500 font-semibold text-center pt-2">
+                        ✓ Message sent successfully! I&apos;ll get back to you soon.
                       </p>
                     )}
                   </form>

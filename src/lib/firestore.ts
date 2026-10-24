@@ -662,13 +662,9 @@ export function subscribeToServices(callback: (services: Service[]) => void) {
       ...convertTimestamps(docSnap.data()),
     })) as Service[];
 
-    // Auto-sync client database if old services (missing mockupType) are detected
-    const isOldData = list.length === 0 || list.some((s) => !s.mockupType);
-    if (isOldData && typeof window !== 'undefined') {
+    // Auto-seed initial services only if collection is completely empty
+    if (list.length === 0 && typeof window !== 'undefined') {
       try {
-        for (const docSnap of snapshot.docs) {
-          await deleteDoc(doc(d, 'services', docSnap.id));
-        }
         for (const service of seedServices) {
           await addDoc(collection(d, 'services'), { ...service, createdAt: Timestamp.now() });
         }

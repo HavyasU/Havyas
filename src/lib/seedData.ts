@@ -4,34 +4,92 @@ export const seedServices: Omit<Service, "id">[] = [
   {
     title: "Website Design",
     description:
-      "Visually appealing, user-centric websites that elevate your brand and create lasting impressions.",
+      "Visually captivating, high-performance responsive websites tailored to elevate your brand and maximize audience engagement.",
     iconName: "fa-code",
     order: 1,
-    mockupType: "search",
+    mockupType: "custom_image",
+    imageUrl:
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=800&auto=format&fit=crop",
+    deliverables: [
+      "Custom Responsive Layouts",
+      "Next.js & React Architecture",
+      "SEO & Core Web Vitals Optimization",
+      "Interactive Micro-Animations",
+      "Content Management Ready",
+    ],
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
   {
-    title: "Graphic Design",
+    title: "Mobile & Web Apps",
     description:
-      "Stunning visuals and branding materials that resonate with your audience and tell your story.",
-    iconName: "fa-pen-nib",
-    order: 2,
-    mockupType: "store",
-  },
-  {
-    title: "Applications",
-    description:
-      "Seamless, impactful, and user-friendly mobile and web applications tailored to your requirements.",
+      "Robust, scalable web applications and cross-platform mobile apps engineered with clean code and real-time capabilities.",
     iconName: "fa-mobile-screen",
-    order: 3,
-    mockupType: "invoice",
+    order: 2,
+    mockupType: "custom_image",
+    imageUrl:
+      "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=800&auto=format&fit=crop",
+    deliverables: [
+      "Cross-Platform Mobile Apps (iOS/Android)",
+      "Single Page Web Applications",
+      "Real-Time WebSocket Sync",
+      "State Management & Offline Support",
+      "Secure Authentication & Roles",
+    ],
+    technologies: ["React Native", "Node.js", "Express", "Redux Toolkit", "Socket.io"],
   },
   {
-    title: "Project Design",
+    title: "UI/UX & Branding",
     description:
-      "Compelling visuals and structured presentations to showcase your academic or professional projects.",
-    iconName: "fa-diagram-project",
+      "Distinctive brand identities, wireframes, and design systems that create memorable impressions and intuitive user journeys.",
+    iconName: "fa-pen-nib",
+    order: 3,
+    mockupType: "custom_image",
+    imageUrl:
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
+    deliverables: [
+      "Wireframing & Interactive Prototyping",
+      "Design System & Component Kits",
+      "Logo & Visual Brand Identity",
+      "Typography & Color Hierarchies",
+      "User Research & Flow Optimization",
+    ],
+    technologies: ["Figma", "Adobe Suite", "Design Systems", "Prototyping", "Vector Art"],
+  },
+  {
+    title: "Backend & APIs",
+    description:
+      "High-throughput server architectures, RESTful & GraphQL microservices, and database modeling built for scale.",
+    iconName: "fa-server",
     order: 4,
-    mockupType: "calendar",
+    mockupType: "custom_image",
+    imageUrl:
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
+    deliverables: [
+      "RESTful & WebSocket API Endpoints",
+      "Database Schema Design & Query Tuning",
+      "JWT & OAuth Security Implementation",
+      "Third-Party Service Integrations",
+      "Serverless & Microservice Deployments",
+    ],
+    technologies: ["Node.js", "Express.js", "Python / Flask", "MongoDB", "MySQL / Firebase"],
+  },
+  {
+    title: "Maintenance & DevOps",
+    description:
+      "Continuous performance audits, cloud deployments, automated testing, and ongoing code maintenance to ensure 99.9% uptime.",
+    iconName: "fa-gauge-high",
+    order: 5,
+    mockupType: "custom_image",
+    imageUrl:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+    deliverables: [
+      "Lighthouse Performance Tuning (90+ Scores)",
+      "Automated CI/CD Deployment Pipelines",
+      "Security Audits & Vulnerability Patching",
+      "Database Backups & Cloud Monitoring",
+      "Legacy Code Refactoring & Bug Resolution",
+    ],
+    technologies: ["Vercel", "Git & GitHub", "Docker", "Cloudinary", "Postman"],
   },
 ];
 

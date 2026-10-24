@@ -10,6 +10,8 @@ export interface Service {
   order: number;
   mockupType?: 'search' | 'store' | 'invoice' | 'calendar' | 'custom_image' | string;
   imageUrl?: string; // Custom image graphic URL
+  deliverables?: string[];
+  technologies?: string[];
   createdAt?: Date;
 }
 
