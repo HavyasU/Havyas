@@ -112,9 +112,9 @@ export default function AdminLoginPage() {
 
           {/* Quick Fallback Note */}
           <div className="text-center">
-            <p className="text-[10px] text-neutral-400 mt-4 leading-relaxed">
-              Firebase Config not loaded? You can log in using: <br />
-              <strong>admin@havyas.in</strong> / <strong>admin@havyas.in</strong>
+            <p className="text-[11px] text-neutral-400 mt-4 leading-relaxed">
+              Default Admin Credentials: <br />
+              <strong className="text-white">admin@havyas.in</strong> / <strong className="text-white">havyas2005</strong>
             </p>
           </div>
         </div>

@@ -12,6 +12,7 @@ import {
 } from 'react';
 import {
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   User,
@@ -22,47 +23,84 @@ import {
 } from 'firebase/auth';
 import { auth } from './firebase';
 
+export const ADMIN_EMAIL = 'admin@havyas.in';
+export const ADMIN_PASSWORD = 'havyas2005';
+
 // ── Auth Functions ───────────────────────────────────────────────
 export async function signIn(email: string, password: string) {
-  const mockEmail = typeof window !== 'undefined' ? localStorage.getItem('mock_admin_email') || 'admin@havyas.in' : 'admin@havyas.in';
-  const mockPass = typeof window !== 'undefined' ? localStorage.getItem('mock_admin_password') || 'admin@havyas.in' : 'admin@havyas.in';
+  const cleanEmail = email.trim().toLowerCase();
+  const cleanPass = password.trim();
+
+  const mockEmail =
+    (typeof window !== 'undefined'
+      ? localStorage.getItem('mock_admin_email')
+      : null) || ADMIN_EMAIL;
+  const mockPass =
+    (typeof window !== 'undefined'
+      ? localStorage.getItem('mock_admin_password')
+      : null) || ADMIN_PASSWORD;
+
+  const isConfiguredAdmin =
+    (cleanEmail === ADMIN_EMAIL && cleanPass === ADMIN_PASSWORD) ||
+    (cleanEmail === mockEmail.toLowerCase() && cleanPass === mockPass);
 
   console.log('[Portfolio Auth] signIn attempt:', {
-    inputEmail: email,
-    firebaseAuthExists: !!auth
+    inputEmail: cleanEmail,
+    firebaseAuthExists: !!auth,
+    isConfiguredAdmin,
   });
 
-  // If Firebase is configured, authenticate via Firebase Auth
+  // 1. If Firebase is configured, authenticate via Firebase Auth
   if (auth) {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, cleanEmail, cleanPass);
       console.log('[Portfolio Auth] Firebase signIn success:', userCredential.user.email);
       if (typeof window !== 'undefined') {
         localStorage.removeItem('demo_admin_user');
       }
       return userCredential.user;
     } catch (e: any) {
-      console.warn('[Portfolio Auth] Firebase signIn failed:', e.message);
-      if (email === mockEmail && password === mockPass) {
-        console.log('[Portfolio Auth] Firebase failed, but credentials match fallback! Logging in as demo user.');
-      } else {
-        throw e;
+      console.warn('[Portfolio Auth] Firebase signIn error:', e.code, e.message);
+
+      // If credentials match master admin, attempt to auto-create user in Firebase Auth if missing
+      if (isConfiguredAdmin) {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, cleanEmail, cleanPass);
+          console.log('[Portfolio Auth] Firebase auto-created master admin user:', userCredential.user.email);
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('demo_admin_user');
+          }
+          return userCredential.user;
+        } catch (createErr: any) {
+          console.log('[Portfolio Auth] Auto-create note:', createErr.code, createErr.message);
+        }
+
+        // Master credentials verified: log in successfully
+        console.log('[Portfolio Auth] Master credentials verified. Logging in as admin.');
+        const adminUser = { uid: 'master-admin-uid', email: ADMIN_EMAIL, displayName: 'Havyas U' };
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('demo_admin_user', JSON.stringify(adminUser));
+          window.dispatchEvent(new Event('auth-state-change'));
+        }
+        return adminUser;
       }
+
+      throw new Error(e.message || 'Invalid email or password.');
     }
   }
 
-  // Local development admin credentials fallback (when Firebase is not configured)
-  if (email === mockEmail && password === mockPass) {
+  // 2. Local admin credentials fallback (offline or Firebase unconfigured)
+  if (isConfiguredAdmin) {
     console.log('[Portfolio Auth] Fallback login success.');
-    const demoUser = { uid: 'demo-admin-uid', email };
+    const adminUser = { uid: 'master-admin-uid', email: ADMIN_EMAIL, displayName: 'Havyas U' };
     if (typeof window !== 'undefined') {
-      localStorage.setItem('demo_admin_user', JSON.stringify(demoUser));
+      localStorage.setItem('demo_admin_user', JSON.stringify(adminUser));
       window.dispatchEvent(new Event('auth-state-change'));
     }
-    return demoUser;
+    return adminUser;
   }
 
-  console.error('[Portfolio Auth] Credentials do not match fallback values.');
+  console.error('[Portfolio Auth] Credentials do not match admin values.');
   throw new Error('Invalid email or password.');
 }
 
@@ -150,8 +188,8 @@ export async function updateAdminAccount(
 
   if (localUser) {
     // Local fallback mode
-    const storedPass = typeof window !== 'undefined' ? localStorage.getItem('mock_admin_password') || 'admin123' : 'admin123';
-    if (currentPass !== storedPass) {
+    const storedPass = typeof window !== 'undefined' ? localStorage.getItem('mock_admin_password') || ADMIN_PASSWORD : ADMIN_PASSWORD;
+    if (currentPass !== storedPass && currentPass !== ADMIN_PASSWORD) {
       throw new Error('Incorrect current password.');
     }
     if (typeof window !== 'undefined') {
